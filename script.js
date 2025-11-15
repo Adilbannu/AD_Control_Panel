@@ -1,14 +1,3 @@
-That's the fastest way to check if your core JavaScript is loading! If the login page disappears and the dashboard loads, we'll know the files are connected and the issue was isolated to the authentication logic.
-
-I will remove the login checks and display the dashboard directly upon loading.
-
-Here is the complete, modified script.js code. You must replace your current script.js file with this entire block.
-
-Complete script.js (Login Removed for Testing)
-This version removes the login check and forces the dashboard to display immediately.
-
-JavaScript
-
 // =================================================================
 // 1. CONFIGURATION & DATA
 // =================================================================
@@ -19,7 +8,7 @@ const TASK_SHEET = 'DAILY_TASKS';
 const APPLICATION_SHEET = 'APPLICATIONS';
 const RECEIPT_SHEET = 'RECEIPTS_MERGE';
 
-// --- Auth Credentials (These are now ignored, but kept for reference) ---
+// --- Auth Credentials (UPDATED) ---
 const CORRECT_USERNAME = "Adil";
 const CORRECT_PASSWORD = "1234"; 
 
@@ -52,12 +41,46 @@ const sheets = [
 
 
 // =================================================================
-// 2. AUTHENTICATION LOGIC (REMOVED FOR TESTING)
+// 2. AUTHENTICATION LOGIC
 // =================================================================
 
-// These functions are kept empty or removed as they are no longer needed
-function showCredentials(event) { event.preventDefault(); alert("Login is disabled for testing."); }
-function checkLogin() { /* Disabled */ }
+function showCredentials(event) {
+    event.preventDefault(); 
+    
+    const username = CORRECT_USERNAME;
+    const password = CORRECT_PASSWORD;
+
+    alert(
+        "🔓 Control Panel Access Reminder:\n\n" +
+        "Username: " + username + "\n" +
+        "Password: " + password + "\n\n" +
+        "If you need to change these credentials, you must edit the 'script.js' file directly."
+    );
+}
+
+
+function checkLogin() {
+    const usernameInput = document.getElementById('username-input').value;
+    const passwordInput = document.getElementById('password-input').value;
+    const errorMsg = document.getElementById('login-error');
+    const appWrapper = document.getElementById('app-wrapper');
+    const loginContainer = document.getElementById('login-container');
+
+    if (usernameInput === CORRECT_USERNAME && passwordInput === CORRECT_PASSWORD) {
+        // SUCCESS: Hide login, show app
+        loginContainer.style.display = 'none';
+        appWrapper.style.display = 'flex'; // Sets the wrapper to show the app
+        errorMsg.style.display = 'none';
+        
+        // Load the initial dashboard view (My Daily Task)
+        loadSheet('addNewTask', 'My Daily Task'); 
+    } else {
+        // FAILURE: Show error message
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = 'Invalid Username or Password. Please try again.';
+        passwordInput.value = ''; // Clear password field
+    }
+}
 
 
 // =================================================================
@@ -338,18 +361,12 @@ document.addEventListener('DOMContentLoaded', () => {
         sheetList.appendChild(listItem);
     });
     
-    // NOTE: The login logic is REMOVED from DOMContentLoaded to allow the dashboard to load directly.
-    
-    // 1. Hide the login container immediately
-    const loginContainer = document.getElementById('login-container');
-    if (loginContainer) loginContainer.style.display = 'none';
-
-    // 2. Show the app wrapper immediately
-    const appWrapper = document.getElementById('app-wrapper');
-    if (appWrapper) appWrapper.style.display = 'flex'; 
-
-    // 3. Load the default sheet
-    loadSheet('addNewTask', 'My Daily Task');
+    const mainHeader = document.getElementById('mainTitleHeader');
+    if (mainHeader) {
+        // Start login system by showing the login container
+        const loginContainer = document.getElementById('login-container');
+        if (loginContainer) loginContainer.style.display = 'flex';
+    }
 
     typeWriter(); 
 });
