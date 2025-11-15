@@ -1,9 +1,4 @@
-I understand. You need the complete, finalized JavaScript code to replace your local file. This version contains the simplified login credentials and all the complex logic for your forms and navigation.
 
-Here is the entire content for your script.js file.
-
-Complete script.js
-JavaScript
 
 // =================================================================
 // 1. CONFIGURATION & DATA
@@ -15,9 +10,9 @@ const TASK_SHEET = 'DAILY_TASKS';
 const APPLICATION_SHEET = 'APPLICATIONS';
 const RECEIPT_SHEET = 'RECEIPTS_MERGE';
 
-// --- Auth Credentials (UPDATED TO SIMPLE FOR EASY TESTING) ---
-const CORRECT_USERNAME = "lac.Adil";
-const CORRECT_PASSWORD = "Bannu@123"; 
+// --- Auth Credentials (UPDATED TO STRONG PASSWORD) ---
+const CORRECT_USERNAME = "Adil_CP_Pro";
+const CORRECT_PASSWORD = "Secure#47Bannu$"; 
 
 
 // Sample data (temporary, for display only)
@@ -31,6 +26,7 @@ const unappliedReceiptsData = [
 ]; 
 const stationeryDetailData = [ /* ... */ ];
 const personalData = [ /* ... */ ];
+
 
 // --- Navigation Structure ---
 const sheets = [
@@ -73,6 +69,7 @@ function checkLogin() {
     const appWrapper = document.getElementById('app-wrapper');
     const loginContainer = document.getElementById('login-container');
 
+    // Authentication check is case-sensitive
     if (usernameInput === CORRECT_USERNAME && passwordInput === CORRECT_PASSWORD) {
         // SUCCESS: Hide login, show app
         loginContainer.style.display = 'none';
@@ -318,7 +315,7 @@ function loadSheet(sheetId, sheetName) {
     } 
     // Load Default/Fallback Views
     else {
-        container.innerHTML = generateTableHTML(dailyWorkCombined, sheetName, 'addNewTask'); 
+        container.innerHTML = generateTableHTML(dailyWorkCombined, sheetName, 'addNewTask'); // Show task list as default view
     }
 }
 
