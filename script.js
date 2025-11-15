@@ -16,8 +16,8 @@ const APPLICATION_SHEET = 'APPLICATIONS';
 const RECEIPT_SHEET = 'RECEIPTS_MERGE';
 
 // --- Auth Credentials (UPDATED TO SIMPLE FOR EASY TESTING) ---
-const CORRECT_USERNAME = "Adil";
-const CORRECT_PASSWORD = "1234"; 
+const CORRECT_USERNAME = "lac.Adil";
+const CORRECT_PASSWORD = "Bannu@123"; 
 
 
 // Sample data (temporary, for display only)
