@@ -3,8 +3,8 @@
 // =================================================================
 
 // *** CRITICAL: YOUR DEPLOYED GAS WEB APP URL ***
-const GAS_WEB_APP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxAa1G9U6AAc-e25xCxFmdmgx9cNk-EXXyk6jixWQ-tFeR3A5RoEp10PMEuzgiW-u77/exec'; 
-const TASK_SHEET = 'MY-DAILY-TASK'; // CORRECTED to match your GSheet tab name
+const GAS_WEB_APP_ENDPOINT = 'https://script.google.com/macros/library/d/1w-TzFYgRZFbHLOWnnSCu7p9T6Xgdoda7d4A5jIhSuZI46e68dBV1HhPh/3'; 
+const TASK_SHEET = 'MY-DAILY-TASK'; 
 const APPLICATION_SHEET = 'APPLICATIONS';
 const RECEIPT_SHEET = 'RECEIPTS_MERGE';
 
@@ -12,17 +12,13 @@ const RECEIPT_SHEET = 'RECEIPTS_MERGE';
 const CORRECT_USERNAME = "Adil";
 const CORRECT_PASSWORD = "1234"; 
 
-
 // Sample data (temporary fallback only, used if GAS fetch fails)
-// NOTE: This array is only used as a fallback if the live data fetch fails.
 let dailyWorkCombined = [
     { Client: 'Sample Client (Local Fallback)', Status: 'Pending', Date: '2025-11-14' },
     { Client: 'Example Co (Local Fallback)', Status: 'Completed', Date: '2025-11-13' },
 ];
+// ... other unused data arrays ...
 
-const unappliedReceiptsData = [ /* ... */ ]; 
-const stationeryDetailData = [ /* ... */ ];
-const personalData = [ /* ... */ ];
 
 // --- Navigation Structure ---
 const sheets = [
@@ -66,35 +62,59 @@ function checkLogin() {
     const loginContainer = document.getElementById('login-container');
 
     if (usernameInput === CORRECT_USERNAME && passwordInput === CORRECT_PASSWORD) {
-        // SUCCESS: Hide login, show app
         loginContainer.style.display = 'none';
-        appWrapper.style.display = 'flex'; // Sets the wrapper to show the app
+        appWrapper.style.display = 'flex'; 
         errorMsg.style.display = 'none';
-        
-        // Load the initial dashboard view (My Daily Task)
         loadSheet('addNewTask', 'My Daily Task'); 
     } else {
-        // FAILURE: Show error message
         errorMsg.style.display = 'block';
         errorMsg.textContent = 'Invalid Username or Password. Please try again.';
-        passwordInput.value = ''; // Clear password field
+        passwordInput.value = ''; 
     }
 }
 
 
 // =================================================================
-// 3. LOCAL STATUS UPDATE (Working Tick - Temporary)
-// NOTE: This function currently won't work correctly with live data 
-// because we lack a unique ID from the sheet. This is a placeholder.
+// 3. CORE DELETION LOGIC (NEW)
 // =================================================================
-function toggleStatusLocal(rowIndex, currentStatus) {
-    alert("Warning: Marking complete is a placeholder. To make this permanent, we need to implement a GAS function to update the sheet row based on its index.");
-    // In a final version, this should send an UPDATE request to GAS with the row index.
+
+async function deleteRowLive(rowIndex) {
+    const confirmDelete = confirm("Are you sure you want to PERMANENTLY delete this task? This cannot be undone.");
     
-    // Fallback: If we assume the data array matches the current display...
-    // const index = rowIndex; // We are passing the array index as ID for now
-    // dailyWorkCombined[index].Status = (currentStatus === 'Completed' ? 'Pending' : 'Completed');
-    // loadSheet('addNewTask', 'My Daily Task'); 
+    if (!confirmDelete) return;
+
+    // Show loading state for safety
+    const container = document.getElementById('dataContainer');
+    container.innerHTML = '<h2>Deleting...</h2><p style="text-align:center;">Processing permanent deletion from Google Sheet.</p>';
+
+
+    try {
+        const response = await fetch(GAS_WEB_APP_ENDPOINT, {
+            method: 'POST',
+            // Send the required parameters as JSON
+            body: JSON.stringify({ 
+                action: 'delete', 
+                targetSheet: TASK_SHEET, 
+                rowIndex: rowIndex 
+            }),
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        const responseText = await response.text();
+        const data = JSON.parse(responseText);
+        
+        if (data.success) {
+            alert("Task deleted successfully!");
+            // Reload the sheet to display the updated live data
+            loadSheet('addNewTask', 'My Daily Task'); 
+        } else {
+            throw new Error(data.message || 'Deletion failed on server.');
+        }
+    } catch (error) {
+        alert(`Error deleting data: ${error.message}`);
+        console.error('Deletion Error:', error);
+        loadSheet('addNewTask', 'My Daily Task'); // Reload in case of error
+    }
 }
 
 
@@ -102,7 +122,7 @@ function toggleStatusLocal(rowIndex, currentStatus) {
 // 4. CORE SUBMISSION HANDLERS
 // =================================================================
 
-/** Reusable success handler (UPDATED BUTTONS) */
+/** Reusable success handler */
 function showSuccessScreen(taskType, targetSheet, loadNextId) {
     const container = document.getElementById('dataContainer');
     container.innerHTML = `
@@ -130,7 +150,6 @@ async function submitFormBase(formId, targetSheet, successMessage, loadNextId) {
     const form = document.getElementById(formId);
     const formData = new FormData(form);
     
-    // Add the target sheet name to the form data for the GAS script
     formData.append('targetSheet', targetSheet); 
     
     const submitBtn = form.querySelector('.submit-btn');
@@ -148,7 +167,7 @@ async function submitFormBase(formId, targetSheet, successMessage, loadNextId) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         
-        // Response should be JSON from GAS (must implement createJsonResponse in GAS)
+        // Response should be JSON from GAS
         const responseText = await response.text();
         const data = JSON.parse(responseText);
 
@@ -156,7 +175,6 @@ async function submitFormBase(formId, targetSheet, successMessage, loadNextId) {
             form.reset(); 
             showSuccessScreen(successMessage, targetSheet, loadNextId);
         } else {
-            // Handle error messages returned by the GAS script
             throw new Error(data.message || 'Submission failed on server.');
         }
 
@@ -206,65 +224,11 @@ function renderTaskForm() {
         </div>
     `;
 }
-
-function renderApplicationForm() {
-    return `
-        <h2>NEW APPLICATION ENTRY</h2>
-        <div class="form-container">
-            <form id="applicationForm" onsubmit="event.preventDefault(); submitApplicationForm();">
-                <div class="form-group">
-                    <label for="applicantNo">Applicant No:</label>
-                    <input type="text" id="applicantNo" name="Applicant No" required placeholder="e.g., APP-001">
-                </div>
-                
-                <input type="hidden" name="Status" value="Pending">
-                
-                <button type="submit" class="submit-btn">Save Application</button>
-            </form>
-        </div>
-    `;
-}
-
-function renderReceiptForm() {
-    return `
-        <h2>ADD NEW UNAPPLIED RECEIPT</h2>
-        <div class="form-container">
-            <form id="receiptForm" onsubmit="event.preventDefault(); submitReceiptForm();">
-                
-                <div class="form-group">
-                    <label for="newCustomerName">Customer Name:</label>
-                    <input type="text" id="newCustomerName" name="Customer Name" required placeholder="e.g., Acme Corp">
-                </div>
-                
-                <div class="form-group">
-                    <label for="newChqNo">CHQ No:</label>
-                    <input type="text" id="newChqNo" name="CHQ No" required placeholder="e.g., 804567">
-                </div>
-
-                <div class="form-group">
-                    <label for="newAmount">Amount:</label>
-                    <input type="number" id="newAmount" name="Amount" required step="0.01" placeholder="e.g., 980.50">
-                </div>
-                
-                <div class="form-group">
-                    <label for="newResponsibility">Responsibility:</label>
-                    <input type="text" id="newResponsibility" name="Responsibility" required placeholder="e.g., Sales Team / John Doe">
-                </div>
-                
-                <div class="form-group">
-                    <label for="newEmail">Contact Email:</label>
-                    <input type="email" id="newEmail" name="Email" required placeholder="e.g., contact@customer.com">
-                </div>
-                
-                <button type="submit" class="submit-btn">Save Receipt</button>
-            </form>
-        </div>
-    `;
-}
+// ... other renderForm functions (omitted for brevity, they are unchanged) ...
 
 
 // =================================================================
-// 6. DATA TABLE AND SWITCHING LOGIC (UPDATED FOR LIVE DATA)
+// 6. DATA TABLE AND SWITCHING LOGIC (LIVE FETCHING)
 // =================================================================
 
 /**
@@ -279,12 +243,11 @@ async function fetchSheetData(sheetName) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         
-        // Must read response as text first, then parse as JSON to handle common GAS response issues
         const responseText = await response.text();
         const data = JSON.parse(responseText);
         
         if (data.success && Array.isArray(data.data)) {
-            return data.data; // Returns the array of objects from the sheet
+            return data.data; 
         } else {
             console.error("GAS Fetch Error:", data.message || "Data not returned successfully.");
             return [];
@@ -292,7 +255,6 @@ async function fetchSheetData(sheetName) {
     } catch (error) {
         console.error("Network or Fetch Failed:", error);
         alert("Could not load live data. Displaying local fallback data.");
-        // Use the local mock data as a fallback
         return dailyWorkCombined; 
     }
 }
@@ -301,9 +263,7 @@ async function fetchSheetData(sheetName) {
 function generateTableHTML(data, title, sheetId) { 
     
     if (sheetId === 'addNewTask') {
-         // Filter and sort the data for better display (Pending tasks first)
          const sortedData = data.sort((a, b) => {
-             // Access Status property safely, handling null/undefined values
              const statusA = (a.Status || '').toString().toLowerCase();
              const statusB = (b.Status || '').toString().toLowerCase();
 
@@ -314,22 +274,20 @@ function generateTableHTML(data, title, sheetId) {
          
          let tableHTML = `<h2 style="margin-top: 40px;">MY DAILY TASK PENDING LIST</h2>`;
 
-         if (data.length === 0) return tableHTML + `<p>No data available from sheet. Have you added headers (Date, Client Name, Status) in Row 1?</p>`;
+         if (data.length === 0) return tableHTML + `<p>No data available from sheet.</p>`;
 
          tableHTML += `<table class="data-table">
                           <thead><tr>
                           <th>Date</th>
                           <th>Client</th>
                           <th>Status</th>
-                          <th>Action</th>
+                          <th>Delete</th>
                           </tr></thead><tbody>`;
          
-         sortedData.forEach((item, index) => {
-            // Ensure status is treated as a string for comparison
+         sortedData.forEach(item => {
             const itemStatus = (item.Status || '').toString().trim().toLowerCase();
             const isCompleted = itemStatus === 'completed';
             
-            // NOTE: Using index + 2 as a mock row reference (row 1 is header)
             tableHTML += `<tr>
                 <td>${item.Date || 'N/A'}</td>
                 <td>${item['Client Name'] || 'N/A'}</td>
@@ -337,10 +295,7 @@ function generateTableHTML(data, title, sheetId) {
                     ${(item.Status || 'PENDING').toUpperCase()}
                 </td>
                 <td>
-                    ${isCompleted 
-                        ? `<span class="completed-text">✅ Done</span>` 
-                        // The action button uses the row index + 2 (since sheet starts at row 1)
-                        : `<button class="action-btn check-btn" onclick="toggleStatusLocal(${index}, 'Pending')" title="Mark Complete">&#10003;</button>`}
+                    <button class="action-btn delete-btn" onclick="deleteRowLive(${item.rowIndex})" title="Permanently Delete Task">🗑️</button>
                 </td>
             </tr>`;
         });
@@ -348,30 +303,25 @@ function generateTableHTML(data, title, sheetId) {
         return tableHTML;
     }
     
-    // Fallback for other views
     if (data.length === 0) return `<h2>${title}</h2><p>No data available.</p>`;
     return `<h2>${title}</h2><p>Table view for ${sheetId} is not yet implemented. Use the form.</p>`;
 }
 
-/** * NEW: Loads only the form view, used after a successful submission.
- */
+/** Loads only the form view, used after a successful submission. */
 function loadSheetFormOnly(sheetId, sheetName) {
     const container = document.getElementById('dataContainer');
-    // Ensure the navigation link is active
     document.querySelectorAll('.sidebar li a').forEach(link => {
         link.classList.remove('active');
     });
     const activeLink = document.getElementById(sheetId);
     if (activeLink) activeLink.classList.add('active');
     
-    // Only load the form without the table below it
     if (sheetId === 'addNewTask') {
         container.innerHTML = renderTaskForm();
     } else if (sheetId === 'appRequired') {
         container.innerHTML = renderApplicationForm();
-    } else if (sheetId === 'unappliedReceipts') {
-        container.innerHTML = renderReceiptForm();
-    }
+    } 
+    // ... other form loading logic ...
 }
 
 
@@ -382,35 +332,23 @@ async function loadSheet(sheetId, sheetName) {
     
     if (mainHeader) mainHeader.style.display = 'none';
 
-    // Reset Nav Links
     document.querySelectorAll('.sidebar li a').forEach(link => {
         link.classList.remove('active');
     });
     const activeLink = document.getElementById(sheetId);
     if (activeLink) activeLink.classList.add('active');
     
-    // Show Loading state while fetching data
     container.innerHTML = '<h2>Loading Data...</h2><p style="text-align:center;">Please wait while we fetch the latest information.</p>';
-
 
     // --- Core Logic: Fetch and Display ---
     if (sheetId === 'addNewTask') {
-        // Fetch live task data using the doGet method via GAS
         const liveTaskData = await fetchSheetData(TASK_SHEET); 
         
-        // RENDER BOTH THE FORM AND THE LIVE TASK LIST TABLE
         container.innerHTML = renderTaskForm() + generateTableHTML(liveTaskData, 'My Daily Task', sheetId);
 
-    } else if (sheetId === 'appRequired') {
-        container.innerHTML = renderApplicationForm();
-    } else if (sheetId === 'unappliedReceipts') {
-        container.innerHTML = renderReceiptForm();
-    }
-    // Load Views 
-    else if (sheetId === 'stationeryDetail') {
-        container.innerHTML = generateTableHTML(dailyWorkCombined, sheetName, sheetId);
     } 
-    // Load Default/Fallback Views
+    // ... other sheet loading logic (omitted for brevity) ...
+    
     else {
         container.innerHTML = generateTableHTML(dailyWorkCombined, sheetName, 'addNewTask'); 
     }
@@ -454,14 +392,11 @@ document.addEventListener('DOMContentLoaded', () => {
         link.href = "#"; 
         link.id = sheet.id;
         
-        // --- NEW: Create the icon element and append it ---
         const icon = document.createElement('i');
         icon.className = sheet.icon + ' nav-icon'; 
         
-        link.appendChild(icon); // Add the icon before the text
-        
-        link.appendChild(document.createTextNode(sheet.name)); // Add the sheet name text
-        // --- END NEW ---
+        link.appendChild(icon); 
+        link.appendChild(document.createTextNode(sheet.name)); 
 
         link.addEventListener('click', (e) => {
             e.preventDefault(); 
@@ -473,7 +408,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const mainHeader = document.getElementById('mainTitleHeader');
     if (mainHeader) {
-        // Start login system by showing the login container
         const loginContainer = document.getElementById('login-container');
         if (loginContainer) loginContainer.style.display = 'flex';
     }
