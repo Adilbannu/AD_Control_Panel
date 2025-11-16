@@ -1,14 +1,14 @@
 // =================================================================
-// 1. CONFIGURATION & DATA
+// 1. CONFIGURATION & DATA (UPDATED)
 // =================================================================
 
-// *** CRITICAL: REPLACE THIS with your authorized Google Apps Script URL ***
-const GAS_WEB_APP_ENDPOINT = 'Yhttps://script.google.com/macros/s/AKfycbxRKR7sqxYbEQu5UGvVKfyhqr9cLZSdpOdYjCeYwtoz0E1oqlfkNp_vlGwZz5bT-wBLdg/exec'; 
-const TASK_SHEET = 'DAILY_TASKS';
+// *** CRITICAL: YOUR DEPLOYED GAS WEB APP URL ***
+const GAS_WEB_APP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxAa1G9U6AAc-e25xCxFmdmgx9cNk-EXXyk6jixWQ-tFeR3A5RoEp10PMEuzgiW-u77/exec'; 
+const TASK_SHEET = 'MY-DAILY-TASK'; // CORRECTED to match your GSheet tab name
 const APPLICATION_SHEET = 'APPLICATIONS';
 const RECEIPT_SHEET = 'RECEIPTS_MERGE';
 
-// --- Auth Credentials (UPDATED) ---
+// --- Auth Credentials ---
 const CORRECT_USERNAME = "Adil";
 const CORRECT_PASSWORD = "1234"; 
 
@@ -19,13 +19,11 @@ let dailyWorkCombined = [
     { id: 2, Client: 'Example Co', Status: 'Completed', Date: '2025-11-13' },
 ];
 
-const unappliedReceiptsData = [
-    { ReceiptID: 1012, Customer: "ABC Corp", Amount: "$1,500.00", Status: "UNAPPLIED" },
-]; 
+const unappliedReceiptsData = [ /* ... */ ]; 
 const stationeryDetailData = [ /* ... */ ];
 const personalData = [ /* ... */ ];
 
-// --- Navigation Structure (UPDATED: Added 'icon' property) ---
+// --- Navigation Structure ---
 const sheets = [
     { name: "My Daily Task", id: "addNewTask", icon: "fas fa-list-check" },         
     { name: "Application Required", id: "appRequired", icon: "fas fa-file-invoice" },  
@@ -120,9 +118,6 @@ function showSuccessScreen(taskType, targetSheet, loadNextId) {
             </div>
         </div>
     `;
-    // After successful submission, reload the task list to include the new item
-    // Note: Since this is local sample data, we'd need to mock the addition here if we wanted to see it instantly.
-    // For now, loadSheet('addNewTask', 'My Daily Task') reloads the view with the current local data.
 }
 
 /** Base handler for all form submissions */
@@ -130,6 +125,7 @@ async function submitFormBase(formId, targetSheet, successMessage, loadNextId) {
     const form = document.getElementById(formId);
     const formData = new FormData(form);
     
+    // Add the target sheet name to the form data for the GAS script
     formData.append('targetSheet', targetSheet); 
     
     const submitBtn = form.querySelector('.submit-btn');
@@ -142,13 +138,18 @@ async function submitFormBase(formId, targetSheet, successMessage, loadNextId) {
             method: 'POST',
             body: formData,
         });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
         const data = await response.json(); 
 
         if (data.success) {
             
             // --- Local update for immediate feedback on the task dashboard ---
             if (formId === 'taskForm') {
-                 // Mock adding a new item to the local list (assuming this app is connected to the sheet for real data)
+                 // Mock adding a new item to the local list (since we aren't fetching the real list yet)
                  const newTask = {
                     id: dailyWorkCombined.length + 1, // Simple mock ID
                     Client: formData.get('Client Name'),
@@ -162,6 +163,7 @@ async function submitFormBase(formId, targetSheet, successMessage, loadNextId) {
             form.reset(); 
             showSuccessScreen(successMessage, targetSheet, loadNextId);
         } else {
+            // Handle error messages returned by the GAS script
             throw new Error(data.message || 'Submission failed on server.');
         }
 
@@ -269,20 +271,16 @@ function renderReceiptForm() {
 
 
 // =================================================================
-// 6. DATA TABLE AND SWITCHING LOGIC (UPDATED)
+// 6. DATA TABLE AND SWITCHING LOGIC
 // =================================================================
 
 function generateTableHTML(data, title, sheetId) { 
     
-    // Updated table generation for the daily tasks view (to match image style)
     if (sheetId === 'addNewTask') {
          // Filter and sort the data for better display (Pending tasks first)
          const sortedData = data.sort((a, b) => {
-             // If A is Pending and B is not, A comes first
              if (a.Status === 'Pending' && b.Status !== 'Pending') return -1;
-             // If B is Pending and A is not, B comes first
              if (a.Status !== 'Pending' && b.Status === 'Pending') return 1;
-             // Otherwise, they are equal in priority (keep original order)
              return 0; 
          });
          
@@ -308,9 +306,7 @@ function generateTableHTML(data, title, sheetId) {
                 </td>
                 <td>
                     ${isCompleted 
-                        // The COMPLETED row HTML
                         ? `<span class="completed-text">✅ Done</span>` 
-                        // The PENDING row HTML with the interactive button
                         : `<button class="action-btn check-btn" onclick="toggleStatusLocal(${item.id}, 'Pending')" title="Mark Complete">&#10003;</button>`}
                 </td>
             </tr>`;
@@ -358,7 +354,7 @@ function loadSheet(sheetId, sheetName) {
 
 
 // =================================================================
-// 7. TYPING ANIMATION AND INITIALIZATION (UPDATED: Link rendering)
+// 7. TYPING ANIMATION AND INITIALIZATION
 // =================================================================
 const textElement = document.getElementById('typewriterText');
 const textToType = "Welcome to the AD Data Manager";
@@ -396,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // --- NEW: Create the icon element and append it ---
         const icon = document.createElement('i');
-        icon.className = sheet.icon + ' nav-icon'; // Use the icon property from the sheets array
+        icon.className = sheet.icon + ' nav-icon'; 
         
         link.appendChild(icon); // Add the icon before the text
         
