@@ -1,435 +1,3 @@
-Here are the complete, updated script.js and style.css files.
-
-The JavaScript now correctly renders the Task form and the Task list table together when "My Daily Task" is selected, and it includes logic to sort pending tasks first. The CSS includes the new styling for the table, status cells, and the checkmark action button to match your required design.
-
-1. Complete Updated script.js 📜
-JavaScript
-
-// =================================================================
-// 1. CONFIGURATION & DATA
-// =================================================================
-
-// *** CRITICAL: REPLACE THIS with your authorized Google Apps Script URL ***
-const GAS_WEB_APP_ENDPOINT = 'YOUR_SINGLE_GAS_WEB_APP_URL_HERE'; 
-const TASK_SHEET = 'DAILY_TASKS';
-const APPLICATION_SHEET = 'APPLICATIONS';
-const RECEIPT_SHEET = 'RECEIPTS_MERGE';
-
-// --- Auth Credentials (UPDATED) ---
-const CORRECT_USERNAME = "Adil";
-const CORRECT_PASSWORD = "1234"; 
-
-
-// Sample data (temporary, for display only)
-let dailyWorkCombined = [
-    { id: 1, Client: 'Sample Client', Status: 'Pending', Date: '2025-11-14' },
-    { id: 2, Client: 'Example Co', Status: 'Completed', Date: '2025-11-13' },
-];
-
-const unappliedReceiptsData = [
-    { ReceiptID: 1012, Customer: "ABC Corp", Amount: "$1,500.00", Status: "UNAPPLIED" },
-]; 
-const stationeryDetailData = [ /* ... */ ];
-const personalData = [ /* ... */ ];
-
-// --- Navigation Structure (UPDATED: Added 'icon' property) ---
-const sheets = [
-    { name: "My Daily Task", id: "addNewTask", icon: "fas fa-list-check" },         
-    { name: "Application Required", id: "appRequired", icon: "fas fa-file-invoice" },  
-    { name: "Unapplied Receipts", id: "unappliedReceipts", icon: "fas fa-money-bill-transfer" }, 
-    
-    // Remaining old menu items
-    { name: "STATIONERY DETAIL", id: "stationeryDetail", icon: "fas fa-pencil-ruler" },
-    { name: "RAJNI RUKSANA CHQ's", id: "rajniRuksanaChqs", icon: "fas fa-file-contract" },
-    { name: "MSQ RECEIPT'S", id: "msqReceipts", icon: "fas fa-receipt" },
-    { name: "CHQ TO BE COLLECT", id: "chqToCollect", icon: "fas fa-calendar-check" },
-    { name: "PERSONAL DATA", id: "personalData", icon: "fas fa-user-tie" }
-];
-
-
-// =================================================================
-// 2. AUTHENTICATION LOGIC
-// =================================================================
-
-function showCredentials(event) {
-    event.preventDefault(); 
-    
-    const username = CORRECT_USERNAME;
-    const password = CORRECT_PASSWORD;
-
-    alert(
-        "🔓 Control Panel Access Reminder:\n\n" +
-        "Username: " + username + "\n" +
-        "Password: " + password + "\n\n" +
-        "If you need to change these credentials, you must edit the 'script.js' file directly."
-    );
-}
-
-
-function checkLogin() {
-    const usernameInput = document.getElementById('username-input').value;
-    const passwordInput = document.getElementById('password-input').value;
-    const errorMsg = document.getElementById('login-error');
-    const appWrapper = document.getElementById('app-wrapper');
-    const loginContainer = document.getElementById('login-container');
-
-    if (usernameInput === CORRECT_USERNAME && passwordInput === CORRECT_PASSWORD) {
-        // SUCCESS: Hide login, show app
-        loginContainer.style.display = 'none';
-        appWrapper.style.display = 'flex'; // Sets the wrapper to show the app
-        errorMsg.style.display = 'none';
-        
-        // Load the initial dashboard view (My Daily Task)
-        loadSheet('addNewTask', 'My Daily Task'); 
-    } else {
-        // FAILURE: Show error message
-        errorMsg.style.display = 'block';
-        errorMsg.textContent = 'Invalid Username or Password. Please try again.';
-        passwordInput.value = ''; // Clear password field
-    }
-}
-
-
-// =================================================================
-// 3. LOCAL STATUS UPDATE (Working Tick - Temporary)
-// =================================================================
-function toggleStatusLocal(itemId, currentStatus) {
-    const index = dailyWorkCombined.findIndex(item => item.id === itemId);
-    if (index > -1) {
-        dailyWorkCombined[index].Status = (currentStatus === 'Completed' ? 'Pending' : 'Completed');
-        loadSheet('addNewTask', 'My Daily Task'); 
-    }
-}
-
-
-// =================================================================
-// 4. CORE SUBMISSION HANDLERS
-// =================================================================
-
-/** Reusable success handler */
-function showSuccessScreen(taskType, targetSheet, loadNextId) {
-    const container = document.getElementById('dataContainer');
-    container.innerHTML = `
-        <div class="form-container" style="text-align: center;">
-            <h2>✅ ${taskType} Submitted Successfully!</h2>
-            <p>Data saved to Google Sheet tab: <b>${targetSheet}</b></p>
-            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
-                <button onclick="loadSheet('addNewTask', 'My Daily Task')" 
-                        class="submit-btn" 
-                        style="width: auto; background-color: #3498db;">
-                    View Dashboard
-                </button>
-                <button onclick="loadSheet('${loadNextId}', 'ADD NEW ${taskType.toUpperCase()}')" 
-                        class="submit-btn" 
-                        style="width: auto;">
-                    Submit New ${taskType}
-                </button>
-            </div>
-        </div>
-    `;
-    // After successful submission, reload the task list to include the new item
-    // Note: Since this is local sample data, we'd need to mock the addition here if we wanted to see it instantly.
-    // For now, loadSheet('addNewTask', 'My Daily Task') reloads the view with the current local data.
-}
-
-/** Base handler for all form submissions */
-async function submitFormBase(formId, targetSheet, successMessage, loadNextId) {
-    const form = document.getElementById(formId);
-    const formData = new FormData(form);
-    
-    formData.append('targetSheet', targetSheet); 
-    
-    const submitBtn = form.querySelector('.submit-btn');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Saving...';
-    submitBtn.disabled = true;
-
-    try {
-        const response = await fetch(GAS_WEB_APP_ENDPOINT, {
-            method: 'POST',
-            body: formData,
-        });
-        const data = await response.json(); 
-
-        if (data.success) {
-            
-            // --- Local update for immediate feedback on the task dashboard ---
-            if (formId === 'taskForm') {
-                 // Mock adding a new item to the local list (assuming this app is connected to the sheet for real data)
-                 const newTask = {
-                    id: dailyWorkCombined.length + 1, // Simple mock ID
-                    Client: formData.get('Client Name'),
-                    Status: 'Pending',
-                    Date: formData.get('Date'),
-                 };
-                 dailyWorkCombined.unshift(newTask); // Add to the start
-            }
-            // --- End Local Update ---
-
-            form.reset(); 
-            showSuccessScreen(successMessage, targetSheet, loadNextId);
-        } else {
-            throw new Error(data.message || 'Submission failed on server.');
-        }
-
-    } catch (error) {
-        alert(`Error saving data. Check GAS deployment. Message: ${error.message}`);
-        console.error('Submission Error:', error);
-    } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }
-}
-
-// Specific Submission Calls for each form
-function submitTaskForm() {
-    submitFormBase('taskForm', TASK_SHEET, 'Task', 'addNewTask');
-}
-
-function submitApplicationForm() {
-    submitFormBase('applicationForm', APPLICATION_SHEET, 'Application', 'appRequired');
-}
-
-function submitReceiptForm() {
-    submitFormBase('receiptForm', RECEIPT_SHEET, 'Receipt', 'unappliedReceipts');
-}
-
-
-// =================================================================
-// 5. FORM RENDERING FUNCTIONS
-// =================================================================
-const getToday = () => new Date().toISOString().split('T')[0];
-
-function renderTaskForm() {
-    return `
-        <h2>MY DAILY TASK ENTRY</h2>
-        <div class="form-container">
-            <form id="taskForm" onsubmit="event.preventDefault(); submitTaskForm();">
-                <div class="form-group" style="display:none;">
-                    <label for="newDate">Date (Auto):</label>
-                    <input type="date" id="newDate" name="Date" value="${getToday()}" required>
-                </div>
-                <div class="form-group">
-                    <label for="newClientName">Task/Client Name:</label>
-                    <input type="text" id="newClientName" name="Client Name" required placeholder="e.g., Finalize design mockups">
-                </div>
-                <button type="submit" class="submit-btn">Save Task</button>
-            </form>
-        </div>
-    `;
-}
-
-function renderApplicationForm() {
-    return `
-        <h2>NEW APPLICATION ENTRY</h2>
-        <div class="form-container">
-            <form id="applicationForm" onsubmit="event.preventDefault(); submitApplicationForm();">
-                <div class="form-group">
-                    <label for="applicantNo">Applicant No:</label>
-                    <input type="text" id="applicantNo" name="Applicant No" required placeholder="e.g., APP-001">
-                </div>
-                
-                <input type="hidden" name="Status" value="Pending">
-                
-                <button type="submit" class="submit-btn">Save Application</button>
-            </form>
-        </div>
-    `;
-}
-
-function renderReceiptForm() {
-    return `
-        <h2>ADD NEW UNAPPLIED RECEIPT</h2>
-        <div class="form-container">
-            <form id="receiptForm" onsubmit="event.preventDefault(); submitReceiptForm();">
-                
-                <div class="form-group">
-                    <label for="newCustomerName">Customer Name:</label>
-                    <input type="text" id="newCustomerName" name="Customer Name" required placeholder="e.g., Acme Corp">
-                </div>
-                
-                <div class="form-group">
-                    <label for="newChqNo">CHQ No:</label>
-                    <input type="text" id="newChqNo" name="CHQ No" required placeholder="e.g., 804567">
-                </div>
-
-                <div class="form-group">
-                    <label for="newAmount">Amount:</label>
-                    <input type="number" id="newAmount" name="Amount" required step="0.01" placeholder="e.g., 980.50">
-                </div>
-                
-                <div class="form-group">
-                    <label for="newResponsibility">Responsibility:</label>
-                    <input type="text" id="newResponsibility" name="Responsibility" required placeholder="e.g., Sales Team / John Doe">
-                </div>
-                
-                <div class="form-group">
-                    <label for="newEmail">Contact Email:</label>
-                    <input type="email" id="newEmail" name="Email" required placeholder="e.g., contact@customer.com">
-                </div>
-                
-                <button type="submit" class="submit-btn">Save Receipt</button>
-            </form>
-        </div>
-    `;
-}
-
-
-// =================================================================
-// 6. DATA TABLE AND SWITCHING LOGIC (UPDATED)
-// =================================================================
-
-function generateTableHTML(data, title, sheetId) { 
-    
-    // Updated table generation for the daily tasks view (to match image style)
-    if (sheetId === 'addNewTask') {
-         // Filter and sort the data for better display (Pending tasks first)
-         const sortedData = data.sort((a, b) => {
-             // If A is Pending and B is not, A comes first
-             if (a.Status === 'Pending' && b.Status !== 'Pending') return -1;
-             // If B is Pending and A is not, B comes first
-             if (a.Status !== 'Pending' && b.Status === 'Pending') return 1;
-             // Otherwise, they are equal in priority (keep original order)
-             return 0; 
-         });
-         
-         let tableHTML = `<h2 style="margin-top: 40px;">MY DAILY TASK PENDING LIST</h2>`;
-
-         if (data.length === 0) return tableHTML + `<p>No data available.</p>`;
-
-         tableHTML += `<table class="data-table">
-                          <thead><tr>
-                          <th>Date</th>
-                          <th>Client</th>
-                          <th>Status</th>
-                          <th>Action</th>
-                          </tr></thead><tbody>`;
-         
-         sortedData.forEach(item => {
-            const isCompleted = item.Status === 'Completed';
-            tableHTML += `<tr>
-                <td>${item.Date}</td>
-                <td>${item.Client}</td>
-                <td class="status-cell ${isCompleted ? 'status-complete-text' : 'status-pending-text'}">
-                    ${item.Status.toUpperCase()}
-                </td>
-                <td>
-                    ${isCompleted 
-                        // The COMPLETED row HTML
-                        ? `<span class="completed-text">✅ Done</span>` 
-                        // The PENDING row HTML with the interactive button
-                        : `<button class="action-btn check-btn" onclick="toggleStatusLocal(${item.id}, 'Pending')" title="Mark Complete">&#10003;</button>`}
-                </td>
-            </tr>`;
-        });
-        tableHTML += `</tbody></table>`;
-        return tableHTML;
-    }
-    
-    // Fallback for other views
-    if (data.length === 0) return `<h2>${title}</h2><p>No data available.</p>`;
-    return `<h2>${title}</h2><p>Table view for ${sheetId} is not yet implemented. Use the form.</p>`;
-}
-
-function loadSheet(sheetId, sheetName) {
-    const container = document.getElementById('dataContainer');
-    const mainHeader = document.getElementById('mainTitleHeader'); 
-    
-    if (mainHeader) mainHeader.style.display = 'none';
-
-    // Reset Nav Links
-    document.querySelectorAll('.sidebar li a').forEach(link => {
-        link.classList.remove('active');
-    });
-    const activeLink = document.getElementById(sheetId);
-    if (activeLink) activeLink.classList.add('active');
-
-    // Load Forms
-    if (sheetId === 'addNewTask') {
-        // RENDER BOTH THE FORM AND THE TASK LIST TABLE
-        container.innerHTML = renderTaskForm() + generateTableHTML(dailyWorkCombined, 'My Daily Task', sheetId);
-    } else if (sheetId === 'appRequired') {
-        container.innerHTML = renderApplicationForm();
-    } else if (sheetId === 'unappliedReceipts') {
-        container.innerHTML = renderReceiptForm();
-    }
-    // Load Views 
-    else if (sheetId === 'stationeryDetail') {
-        container.innerHTML = generateTableHTML(stationeryDetailData, sheetName, sheetId);
-    } 
-    // Load Default/Fallback Views
-    else {
-        container.innerHTML = generateTableHTML(dailyWorkCombined, sheetName, 'addNewTask'); // Show task list as default view
-    }
-}
-
-
-// =================================================================
-// 7. TYPING ANIMATION AND INITIALIZATION (UPDATED: Link rendering)
-// =================================================================
-const textElement = document.getElementById('typewriterText');
-const textToType = "Welcome to the AD Data Manager";
-const typingSpeed = 100; 
-const pauseTime = 5000; 
-
-let charIndex = 0;
-
-function typeWriter() {
-    if (!textElement) return; 
-    if (charIndex < textToType.length) {
-        textElement.textContent += textToType.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeWriter, typingSpeed);
-    } else {
-        setTimeout(startDeleting, pauseTime);
-    }
-}
-function startDeleting() {
-    if (charIndex > 0) {
-        textElement.textContent = textToType.substring(0, charIndex - 1);
-        charIndex--;
-        setTimeout(startDeleting, typingSpeed / 2); 
-    } else {
-        setTimeout(typeWriter, 500); 
-    }
-}
-document.addEventListener('DOMContentLoaded', () => {
-    const sheetList = document.getElementById('sheetList');
-    sheets.forEach(sheet => {
-        const listItem = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = "#"; 
-        link.id = sheet.id;
-        
-        // --- NEW: Create the icon element and append it ---
-        const icon = document.createElement('i');
-        icon.className = sheet.icon + ' nav-icon'; // Use the icon property from the sheets array
-        
-        link.appendChild(icon); // Add the icon before the text
-        
-        link.appendChild(document.createTextNode(sheet.name)); // Add the sheet name text
-        // --- END NEW ---
-
-        link.addEventListener('click', (e) => {
-            e.preventDefault(); 
-            loadSheet(sheet.id, sheet.name);
-        });
-        listItem.appendChild(link);
-        sheetList.appendChild(listItem);
-    });
-    
-    const mainHeader = document.getElementById('mainTitleHeader');
-    if (mainHeader) {
-        // Start login system by showing the login container
-        const loginContainer = document.getElementById('login-container');
-        if (loginContainer) loginContainer.style.display = 'flex';
-    }
-
-    typeWriter(); 
-});
-2. Complete Updated style.css 🎨
-CSS
-
 body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
@@ -437,17 +5,15 @@ body {
     color: #333;
 }
 
-/* --- NEW: ARABIC BLESSING STYLING (With Animation) --- */
+/* --- ARABIC BLESSING STYLING --- */
 #arabic-blessing {
-    font-size: 4em; /* Large size */
+    font-size: 4em; 
     font-weight: 700;
     text-align: center; 
-    color: #3498db; /* Blue color */
-    
+    color: #3498db; 
     margin-top: 30px;
     margin-bottom: 40px; 
-    
-    direction: rtl; /* Important for alignment */
+    direction: rtl; 
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
     font-family: 'Arial', 'Times New Roman', serif; 
 }
@@ -457,20 +23,15 @@ body {
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
-    
-    /* Animation Properties: INCREASED DURATION to 5s */
     width: 0; 
     animation: typing-arabic 5s steps(15, end) forwards; 
-    /* NOTE: Ensure the @keyframes typing-arabic block exists in your CSS */
 }
 
-/* Keyframes for the Animation */
 @keyframes typing-arabic {
     from {
         width: 0;
     }
     to {
-        /* Set final width to 100% to fully reveal the text */
         width: 100%; 
     }
 }
@@ -552,16 +113,11 @@ body {
     cursor: default;
 }
 
-.logo-container:hover {
-    transform: scale(1.02); 
-    opacity: 0.95;
-}
-
 .logo-img {
-    width: 120px; /* Large Image Size */
+    width: 120px; 
     height: 120px;
     object-fit: contain; 
-    margin-right: 3px; /* Tight spacing */
+    margin-right: 3px; 
     vertical-align: middle;
 }
 
@@ -588,7 +144,7 @@ body {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* --- INTERACTIVE USER PROFILE PILL STYLING --- */
+/* --- USER PROFILE PILL STYLING --- */
 .user-profile {
     text-align: center;
     padding: 10px 0 20px 0;
@@ -596,7 +152,6 @@ body {
     position: relative;
 }
 
-/* 1. The Pill-Shaped Button Container */
 .profile-pill-box {
     display: flex;
     align-items: center;
@@ -623,7 +178,6 @@ body {
         inset 0 1px 3px rgba(255, 255, 255, 0.3);
 }
 
-/* 2. Avatar Icon */
 .avatar-icon {
     width: 30px;
     height: 30px;
@@ -637,7 +191,6 @@ body {
     background-position: center;
 }
 
-/* 3. Username Text */
 .username-pill {
     flex-grow: 1; 
     color: white;
@@ -647,14 +200,12 @@ body {
     white-space: nowrap; 
 }
 
-/* 4. Notification Bell Icon */
 .notification-bell {
     font-size: 1.2em;
     color: #FFD700;
     margin-left: 10px;
 }
 
-/* 5. Project Details (Text below the pill) */
 .project-details {
     display: block;
     margin-top: 10px;
@@ -664,14 +215,6 @@ body {
     text-align: center;
 }
 
-
-/* --- TEXT ANIMATION STYLES --- */
-.user-profile .username, .user-profile .project-details {
-    opacity: 0;
-    animation: fadeInSlide 1s ease-out 1s forwards; 
-}
-
-/* Define the Animation */
 @keyframes fadeInSlide {
     0% {
         opacity: 0;
@@ -706,19 +249,18 @@ body {
 
 /* --- Icon Styling for Sidebar (White) --- */
 .nav-icon {
-    font-size: 1.1em; /* Adjust size */
-    margin-right: 12px; /* Space between icon and text */
+    font-size: 1.1em; 
+    margin-right: 12px; 
     color: #FFFFFF; 
     transition: color 0.2s;
 }
 
-/* Enhanced Hover & Active States */
 .sidebar li a:hover {
     background-color: #34495e;
     color: white; 
     padding-left: 25px; 
 }
-.sidebar li a:hover .nav-icon { /* Icon color on hover */
+.sidebar li a:hover .nav-icon { 
     color: white; 
 }
 
@@ -730,7 +272,7 @@ body {
     padding-left: 20px;
     box-shadow: 0 0 10px rgba(52, 152, 219, 0.4); 
 }
-.sidebar li a.active .nav-icon { /* Icon color when active */
+.sidebar li a.active .nav-icon { 
     color: white;
 }
 
@@ -747,7 +289,6 @@ body {
     background-color: #f4f7f6;
 }
 
-/* Main Heading Styling (for Welcome banner) */
 .content h1 {
     font-family: 'Poppins', sans-serif; 
     font-size: 3em; 
@@ -782,7 +323,6 @@ body {
     margin-bottom: 30px;
 }
 
-/* Cursor Styling and Animation */
 .cursor {
     display: inline-block;
     color: #5495d6;
@@ -804,7 +344,6 @@ body {
     padding-bottom: 10px;
 }
 
-/* New general table styles for better appearance */
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -834,12 +373,12 @@ body {
 
 /* Status Text Styling */
 .status-pending-text {
-    color: #f44336; /* Red */
+    color: #f44336; 
     font-weight: 700;
     font-size: 0.9em;
 }
 .status-complete-text {
-    color: #4CAF50; /* Green */
+    color: #4CAF50; 
     font-weight: 700;
     font-size: 0.9em;
 }
@@ -854,7 +393,7 @@ body {
     cursor: pointer;
     font-size: 1.1em;
     transition: all 0.2s;
-    width: 30px; /* fixed width for square look */
+    width: 30px; 
     height: 30px;
     line-height: 1;
     display: flex;
