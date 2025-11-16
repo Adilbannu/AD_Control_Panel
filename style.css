@@ -1,8 +1,105 @@
-You are right, your index.html file won't look correct without the CSS.
+I understand. You need the complete, synchronized code for both the HTML and CSS files, incorporating the final structure for the elegant, animated Arabic text.
 
-Here is the complete, final content for your style.css file. You should create a new file named style.css in your new GitHub repository and paste this entire code block into it.
+Here are the complete, final files to replace your existing ones.
 
-Complete style.css File
+1. Complete index.html File
+This file includes the final logo, the hidden login structure, and the new animated Arabic text structure.
+
+HTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AD Data Manager - Daily Sheets</title>
+    
+    <link rel="stylesheet" href="./style.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Oswald:wght@700;800&family=Lobster:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+
+    <div id="login-container">
+        <div class="form-container" id="login-box">
+            <h2>CONTROL PANEL LOGIN</h2>
+            <form id="login-form" onsubmit="event.preventDefault(); checkLogin();">
+                <div class="form-group">
+                    <label for="username-input">Username</label>
+                    <input type="text" id="username-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="password-input">Password</label>
+                    <input type="password" id="password-input" required>
+                </div>
+                <button type="submit" class="submit-btn" id="login-button">Log In</button>
+                <p id="login-error" style="color: #f44336; text-align: center; margin-top: 10px; display: none;">Invalid Username or Password.</p>
+                
+                <p style="text-align: center; margin-top: 15px;">
+                    <a href="#" onclick="showCredentials(event)" style="color: #3498db; font-size: 0.9em; text-decoration: none;">
+                        Forgot Username / Password?
+                    </a>
+                </p>
+            </form>
+        </div>
+    </div> 
+
+    <div id="app-wrapper" style="display: none;"> 
+        <div class="app-container">
+            
+            <nav class="sidebar">
+                <div class="logo-container">
+                    <img src="./logoimg.png" alt="ADIL Logo" class="logo-img">
+                    <div class="logo-text-wrapper">
+                        <span class="logo-main">CONTROL</span>
+                        <span class="logo-sub">PANEL</span>
+                    </div>
+                </div>
+                
+                <div class="user-profile">
+                    <div class="profile-pill-box">
+                        <div class="avatar-icon"></div> 
+                        <span class="username-pill">Admin User - ADIL</span>
+                        <span class="notification-bell">🔔</span>
+                    </div>
+                    <span class="project-details">
+                        <span class="main-title">Admin User -- ADIL</span>
+                        <span class="sub-title">Complete AI Based</span>
+                        <span class="sub-title">(Project 0001)</span>
+                    </span>
+                </div>
+                <ul id="sheetList">
+                </ul>
+            </nav>
+
+            <main class="content">
+                <div id="arabic-blessing">
+                    <span id="arabic-text-animated">﷽</span>
+                </div>
+                
+                <div id="mainTitleHeader">
+                    <h1>
+                        <span id="typewriterText"></span>
+                        <span class="cursor">|</span>
+                    </h1>
+                    <p>Select a sheet from the sidebar to view your data.</p>
+                </div>
+                
+                <div id="dataContainer">
+                </div>
+            </main>
+            
+        </div>
+    </div> 
+
+    <script src="./script.js"></script>
+</body>
+</html>
+2. Complete style.css File
+This CSS includes the final styling for the logo, user profile, and the new Arabic text animation.
+
 CSS
 
 body {
@@ -12,14 +109,52 @@ body {
     color: #333;
 }
 
+/* --- NEW: ARABIC BLESSING STYLING (With Animation) --- */
+#arabic-blessing {
+    font-size: 4em; /* Large size */
+    font-weight: 700;
+    text-align: center; 
+    color: #3498db; /* Blue color */
+    
+    margin-top: 30px;
+    margin-bottom: 40px; 
+    
+    direction: rtl; /* Important for alignment */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    font-family: 'Arial', 'Times New Roman', serif; 
+}
+
+/* Style for the typing effect container */
+#arabic-text-animated {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    
+    /* Animation Properties: INCREASED DURATION to 5s */
+    width: 0; 
+    animation: typing-arabic 5s steps(15, end) forwards; 
+    /* NOTE: Ensure the @keyframes typing-arabic block exists in your CSS */
+}
+
+/* Keyframes for the Animation */
+@keyframes typing-arabic {
+    from {
+        width: 0;
+    }
+    to {
+        /* Set final width to 100% to fully reveal the text */
+        width: 100%; 
+    }
+}
+
+
 /* --- LOGIN PAGE STYLES --- */
 #login-container {
-    /* Centers the login box on the screen */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #2c3e50; /* Match sidebar background color */
+    background-color: #2c3e50;
     width: 100%;
 }
 
@@ -38,8 +173,24 @@ body {
     text-align: center;
 }
 
+#login-box input[type="text"],
+#login-box input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: border-color 0.3s;
+    margin-bottom: 20px; 
+}
+
+#login-box input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
 #login-button {
-    /* Uses general submit-btn styles, ensures color override */
     background-color: #3498db !important;
 }
 
@@ -60,174 +211,136 @@ body {
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
-/* UPDATED Logo Styling */
-.sidebar .logo {
-    font-size: 1.7em; 
-    font-weight: 700; 
-    font-family: 'Oswald', 'Montserrat', sans-serif; 
-    text-align: center;
+/* --- LOGO IMAGE + TEXT STYLES --- */
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 30px;
-    padding: 0 20px;
-    color: #ECF0F1; 
-    text-shadow: 
-        1px 1px 1px rgba(0, 0, 0, 0.4), 
-        -1px -1px 1px rgba(255, 255, 255, 0.1);
-    letter-spacing: 2px; 
-    transition: all 0.3s ease-in-out; 
+    padding: 0 10px;
+    font-family: 'Oswald', 'Montserrat', sans-serif;
+    line-height: 1.0; 
+    transition: all 0.3s ease-in-out;
+    cursor: default;
+}
+
+.logo-container:hover {
+    transform: scale(1.02); 
+    opacity: 0.95;
+}
+
+.logo-img {
+    width: 120px; /* Large Image Size */
+    height: 120px;
+    object-fit: contain; 
+    margin-right: 3px; /* Tight spacing */
+    vertical-align: middle;
+}
+
+.logo-text-wrapper {
+    text-align: left; 
+}
+
+.logo-main {
+    display: block;
+    font-size: 1.5em; 
+    font-weight: 800; 
     text-transform: uppercase;
+    color: #FFFFFF; 
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); 
 }
 
-.sidebar .logo:hover {
-    transform: translateY(-1px);
-    color: #FFFFFF;
-    text-shadow: 
-        1px 1px 2px rgba(0, 0, 0, 0.5),
-        -1px -1px 2px rgba(255, 255, 255, 0.2);
+.logo-sub {
+    display: block;
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-top: 2px; 
+    color: #FFFFFF; 
+    text-transform: uppercase;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* --- INTERACTIVE USER PROFILE STYLING --- */
+/* --- INTERACTIVE USER PROFILE PILL STYLING --- */
 .user-profile {
     text-align: center;
-    margin: 20px 0 30px 0;
-    padding: 0 20px;
-    color: #65bed4; 
+    padding: 10px 0 20px 0;
+    margin: 0 0 20px 0;
     position: relative;
 }
 
-/* Icon Container */
-.user-icon-container {
-    width: 80px; 
-    height: 80px;
-    border-radius: 50%;
-    background-color: #f0f2f5; 
-    display: flex; 
-    justify-content: center;
+/* 1. The Pill-Shaped Button Container */
+.profile-pill-box {
+    display: flex;
     align-items: center;
-    margin: 0 auto 10px auto; 
-    border: 3px solid #7f8c8d; 
-    overflow: hidden; 
-    position: relative;
-    cursor: pointer; 
-    transition: all 0.3s ease-in-out; 
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 0 10px rgba(255,255,255,0.1);
+    justify-content: space-between;
+    
+    background-color: #3e506d; 
+    border-radius: 25px; 
+    padding: 8px 12px;
+    margin: 0 auto;
+    width: 90%; 
+    
+    box-shadow: 
+        0 4px 10px rgba(0, 0, 0, 0.5), 
+        inset 0 1px 3px rgba(255, 255, 255, 0.2); 
+        
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; 
 }
 
-/* User Shape (the 'man' icon) */
-.user-shape {
-    position: absolute;
-    width: 30px; 
+.profile-pill-box:hover {
+    background-color: #4a5c7a; 
+    box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.6), 
+        inset 0 1px 3px rgba(255, 255, 255, 0.3);
+}
+
+/* 2. Avatar Icon */
+.avatar-icon {
+    width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: #3498db; 
-    bottom: 30px; 
-    left: 50%;
-    transform: translateX(-50%);
-    transition: all 0.4s ease-in-out;
-    z-index: 2; 
+    background-color: #ecf0f1; 
+    margin-right: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.4); 
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232c3e50"><circle cx="12" cy="7" r="3"/><path d="M17.25 21a5.25 5.25 0 0 0-10.5 0h-1.5a6.75 6.75 0 0 1 13.5 0h-1.5z"/></svg>');
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-.user-shape::before { /* Body */
-    content: '';
-    position: absolute;
-    width: 60px;
-    height: 40px;
-    background-color: #3498db; 
-    border-radius: 40px 40px 0 0;
-    bottom: -35px; 
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-}
-
-/* Gear Shape */
-.gear-shape {
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    background-color: #7f8c8d; 
-    border-radius: 50%; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 50%;
-    right: 15px; 
-    transform: translateY(-50%) rotate(0deg); 
-    transition: all 0.4s ease-in-out;
-    z-index: 3; 
-}
-
-.gear-shape::before,
-.gear-shape::after { /* Teeth of the gear */
-    content: '';
-    position: absolute;
-    background-color: #7f8c8d;
-}
-
-.gear-shape::before { /* Horizontal tooth */
-    width: 35px;
-    height: 8px;
-    border-radius: 2px;
-}
-
-.gear-shape::after { /* Vertical tooth */
-    width: 8px;
-    height: 35px;
-    border-radius: 2px;
-}
-
-/* Hover Effects */
-.user-icon-container:hover {
-    background-color: #3b5065; 
-    border-color: #3498db; 
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.4), 0 0 15px rgba(52,152,219,0.3);
-}
-
-.user-icon-container:hover .user-shape {
-    transform: translateX(-150%) translateY(-10px); 
-    background-color: #2980b9; 
-}
-
-.user-icon-container:hover .user-shape::before {
-    background-color: #2980b9; 
-}
-
-.user-icon-container:hover .gear-shape {
-    transform: translateX(100%) translateY(-10px) rotate(360deg); 
-    background-color: #95a5a6; 
-}
-
-.user-icon-container:hover .gear-shape::before,
-.user-icon-container:hover .gear-shape::after {
-    background-color: #95a5a6;
-}
-
-/* USERNAME TEXT STYLING AND ANIMATION */
-.user-profile .username {
-    display: block; 
-    font-size: 1.1em; 
-    font-weight: 600;
-    color: #f8f8f8; 
-    margin-top: 10px; 
-    text-align: center;
-    line-height: 1.2em;
-    
-    /* Animation settings */
-    opacity: 0; 
-    animation: fadeInSlide 1s ease-out 1s forwards; 
-}
-
-/* Styling for the first line (Admin User) */
-.user-profile .username .main-title {
+/* 3. Username Text */
+.username-pill {
+    flex-grow: 1; 
+    color: white;
     font-size: 1.1em;
     font-weight: 600;
-    display: block;
+    text-align: left;
+    white-space: nowrap; 
 }
 
-/* Styling for the second and third lines (Project Details) */
-.user-profile .username .sub-title {
-    font-size: 0.85em; 
-    font-weight: 400; 
+/* 4. Notification Bell Icon */
+.notification-bell {
+    font-size: 1.2em;
+    color: #FFD700;
+    margin-left: 10px;
+}
+
+/* 5. Project Details (Text below the pill) */
+.project-details {
     display: block;
+    margin-top: 10px;
+    color: #c0c9d3;
+    font-size: 0.8em;
+    font-weight: 400;
+    text-align: center;
+}
+
+
+/* --- TEXT ANIMATION STYLES --- */
+.user-profile .username, .user-profile .project-details {
+    opacity: 0;
+    animation: fadeInSlide 1s ease-out 1s forwards; 
 }
 
 /* Define the Animation */
@@ -274,12 +387,12 @@ body {
     background-color: #3498db; 
     color: white;
     font-weight: 700;
-    border-left: 5px solid #FFD700; /* Sharp gold indicator */
+    border-left: 5px solid #FFD700; 
     padding-left: 20px;
     box-shadow: 0 0 10px rgba(52, 152, 219, 0.4); 
 }
 
-/* --- MAIN CONTENT STYLES (APP-WRAPPER MUST BE FLEX) --- */
+/* --- MAIN CONTENT STYLES --- */
 #app-wrapper {
     display: flex;
     width: 100%;
@@ -291,7 +404,7 @@ body {
     background-color: #f4f7f6;
 }
 
-/* Main Heading Styling */
+/* Main Heading Styling (for Welcome banner) */
 .content h1 {
     font-family: 'Poppins', sans-serif; 
     font-size: 3em; 
@@ -302,7 +415,6 @@ body {
     position: relative;
     padding-bottom: 15px;
     
-    /* Animation fix styles */
     display: flex;
     justify-content: center;
     white-space: nowrap;
@@ -342,25 +454,11 @@ body {
     50% { opacity: 0; }
 }
 
-/* --- DATA TABLE STYLES --- */
+/* --- DATA TABLE AND FORM STYLING (General) --- */
 #dataContainer h2 {
     color: #2c3e50;
     border-bottom: 2px solid #ddd;
     padding-bottom: 10px;
-}
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.data-table th,
-.data-table td {
-    border: 1px solid #ddd;
-    padding: 10px 15px;
-    text-align: left;
 }
 
 .data-table th {
@@ -368,16 +466,6 @@ body {
     color: white;
     font-weight: 700;
 }
-
-.data-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.data-table tbody tr:hover {
-    background-color: #e8f4f8;
-}
-
-/* Status Text Styles */
 .status-pending-text {
     color: #f44336;
     font-weight: 700;
@@ -387,37 +475,6 @@ body {
     font-weight: 700;
 }
 
-/* Checkmark Button Styling */
-.check-btn {
-    border: none;
-    padding: 8px 15px;
-    border-radius: 50%;
-    font-size: 1.2em;
-    font-weight: 700;
-    cursor: pointer;
-    background-color: #d8c621;
-    color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    transition: background-color 0.2s, transform 0.1s;
-}
-
-.check-btn:hover {
-    background-color: #a7a533;
-    transform: scale(1.05);
-}
-
-.check-btn:active {
-    transform: translateY(1px);
-}
-
-.completed-text {
-    font-weight: 600;
-    color: #eaffeb;
-    display: block;
-    text-align: center;
-}
-
-/* --- FORM STYLING --- */
 .form-container {
     max-width: 600px;
     margin: 30px auto;
@@ -440,7 +497,17 @@ body {
 
 .form-container input[type="text"],
 .form-container input[type="number"],
-.form-container input[type="date"],
+.form-container input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: border-color 0.3s;
+    margin-bottom: 0; 
+}
+/* Login specific styling */
 #login-box input[type="password"],
 #login-box input[type="text"] {
     width: 100%;
@@ -450,7 +517,9 @@ body {
     box-sizing: border-box;
     font-size: 1em;
     transition: border-color 0.3s;
+    margin-bottom: 20px;
 }
+
 
 .form-container input:focus,
 #login-box input:focus {
