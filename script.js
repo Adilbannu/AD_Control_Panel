@@ -3,7 +3,7 @@
 // =================================================================
 
 // *** CRITICAL: YOUR DEPLOYED GAS WEB APP URL ***
-const GAS_WEB_APP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyJn2Jfap7egvSAo4wyYxh0lDqbM-EU-cdBrPmA6UCFhUbrnfYXgnSoLK-QM5Y_SNGv/exec'; 
+ 
 const TASK_SHEET = 'MY-DAILY-TASK'; 
 const APPLICATION_SHEET = 'APPLICATIONS';
 const RECEIPT_SHEET = 'RECEIPTS_MERGE';
