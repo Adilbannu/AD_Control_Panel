@@ -9,8 +9,8 @@ const APPLICATION_SHEET = 'APPLICATIONS';
 const RECEIPT_SHEET = 'RECEIPTS_MERGE';
 
 // --- Auth Credentials ---
-const CORRECT_USERNAME = "Adil";
-const CORRECT_PASSWORD = "1234"; 
+const CORRECT_USERNAME = "Lac.Adil";
+const CORRECT_PASSWORD = "Bannu@123"; 
 
 
 // Sample data (temporary fallback only, used if GAS fetch fails)
