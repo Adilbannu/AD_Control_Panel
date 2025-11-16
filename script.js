@@ -13,10 +13,11 @@ const CORRECT_USERNAME = "Adil";
 const CORRECT_PASSWORD = "1234"; 
 
 
-// Sample data (temporary, for display only)
+// Sample data (temporary fallback only, used if GAS fetch fails)
+// NOTE: This array is only used as a fallback if the live data fetch fails.
 let dailyWorkCombined = [
-    { id: 1, Client: 'Sample Client', Status: 'Pending', Date: '2025-11-14' },
-    { id: 2, Client: 'Example Co', Status: 'Completed', Date: '2025-11-13' },
+    { Client: 'Sample Client (Local Fallback)', Status: 'Pending', Date: '2025-11-14' },
+    { Client: 'Example Co (Local Fallback)', Status: 'Completed', Date: '2025-11-13' },
 ];
 
 const unappliedReceiptsData = [ /* ... */ ]; 
@@ -83,13 +84,17 @@ function checkLogin() {
 
 // =================================================================
 // 3. LOCAL STATUS UPDATE (Working Tick - Temporary)
+// NOTE: This function currently won't work correctly with live data 
+// because we lack a unique ID from the sheet. This is a placeholder.
 // =================================================================
-function toggleStatusLocal(itemId, currentStatus) {
-    const index = dailyWorkCombined.findIndex(item => item.id === itemId);
-    if (index > -1) {
-        dailyWorkCombined[index].Status = (currentStatus === 'Completed' ? 'Pending' : 'Completed');
-        loadSheet('addNewTask', 'My Daily Task'); 
-    }
+function toggleStatusLocal(rowIndex, currentStatus) {
+    alert("Warning: Marking complete is a placeholder. To make this permanent, we need to implement a GAS function to update the sheet row based on its index.");
+    // In a final version, this should send an UPDATE request to GAS with the row index.
+    
+    // Fallback: If we assume the data array matches the current display...
+    // const index = rowIndex; // We are passing the array index as ID for now
+    // dailyWorkCombined[index].Status = (currentStatus === 'Completed' ? 'Pending' : 'Completed');
+    // loadSheet('addNewTask', 'My Daily Task'); 
 }
 
 
@@ -97,7 +102,7 @@ function toggleStatusLocal(itemId, currentStatus) {
 // 4. CORE SUBMISSION HANDLERS
 // =================================================================
 
-/** Reusable success handler */
+/** Reusable success handler (UPDATED BUTTONS) */
 function showSuccessScreen(taskType, targetSheet, loadNextId) {
     const container = document.getElementById('dataContainer');
     container.innerHTML = `
@@ -110,10 +115,10 @@ function showSuccessScreen(taskType, targetSheet, loadNextId) {
                         style="width: auto; background-color: #3498db;">
                     View Dashboard
                 </button>
-                <button onclick="loadSheet('${loadNextId}', 'ADD NEW ${taskType.toUpperCase()}')" 
+                <button onclick="loadSheetFormOnly('${loadNextId}', 'ADD NEW ${taskType.toUpperCase()}')" 
                         class="submit-btn" 
                         style="width: auto;">
-                    Submit New ${taskType}
+                    Submit New Task
                 </button>
             </div>
         </div>
@@ -143,23 +148,11 @@ async function submitFormBase(formId, targetSheet, successMessage, loadNextId) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         
-        const data = await response.json(); 
+        // Response should be JSON from GAS (must implement createJsonResponse in GAS)
+        const responseText = await response.text();
+        const data = JSON.parse(responseText);
 
         if (data.success) {
-            
-            // --- Local update for immediate feedback on the task dashboard ---
-            if (formId === 'taskForm') {
-                 // Mock adding a new item to the local list (since we aren't fetching the real list yet)
-                 const newTask = {
-                    id: dailyWorkCombined.length + 1, // Simple mock ID
-                    Client: formData.get('Client Name'),
-                    Status: 'Pending',
-                    Date: formData.get('Date'),
-                 };
-                 dailyWorkCombined.unshift(newTask); // Add to the start
-            }
-            // --- End Local Update ---
-
             form.reset(); 
             showSuccessScreen(successMessage, targetSheet, loadNextId);
         } else {
@@ -271,22 +264,57 @@ function renderReceiptForm() {
 
 
 // =================================================================
-// 6. DATA TABLE AND SWITCHING LOGIC
+// 6. DATA TABLE AND SWITCHING LOGIC (UPDATED FOR LIVE DATA)
 // =================================================================
+
+/**
+ * Fetches data from the Google Sheet via the GAS Web App's doGet method.
+ */
+async function fetchSheetData(sheetName) {
+    const url = `${GAS_WEB_APP_ENDPOINT}?sheet=${sheetName}`;
+    
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        // Must read response as text first, then parse as JSON to handle common GAS response issues
+        const responseText = await response.text();
+        const data = JSON.parse(responseText);
+        
+        if (data.success && Array.isArray(data.data)) {
+            return data.data; // Returns the array of objects from the sheet
+        } else {
+            console.error("GAS Fetch Error:", data.message || "Data not returned successfully.");
+            return [];
+        }
+    } catch (error) {
+        console.error("Network or Fetch Failed:", error);
+        alert("Could not load live data. Displaying local fallback data.");
+        // Use the local mock data as a fallback
+        return dailyWorkCombined; 
+    }
+}
+
 
 function generateTableHTML(data, title, sheetId) { 
     
     if (sheetId === 'addNewTask') {
          // Filter and sort the data for better display (Pending tasks first)
          const sortedData = data.sort((a, b) => {
-             if (a.Status === 'Pending' && b.Status !== 'Pending') return -1;
-             if (a.Status !== 'Pending' && b.Status === 'Pending') return 1;
+             // Access Status property safely, handling null/undefined values
+             const statusA = (a.Status || '').toString().toLowerCase();
+             const statusB = (b.Status || '').toString().toLowerCase();
+
+             if (statusA === 'pending' && statusB !== 'pending') return -1;
+             if (statusA !== 'pending' && statusB === 'pending') return 1;
              return 0; 
          });
          
          let tableHTML = `<h2 style="margin-top: 40px;">MY DAILY TASK PENDING LIST</h2>`;
 
-         if (data.length === 0) return tableHTML + `<p>No data available.</p>`;
+         if (data.length === 0) return tableHTML + `<p>No data available from sheet. Have you added headers (Date, Client Name, Status) in Row 1?</p>`;
 
          tableHTML += `<table class="data-table">
                           <thead><tr>
@@ -296,18 +324,23 @@ function generateTableHTML(data, title, sheetId) {
                           <th>Action</th>
                           </tr></thead><tbody>`;
          
-         sortedData.forEach(item => {
-            const isCompleted = item.Status === 'Completed';
+         sortedData.forEach((item, index) => {
+            // Ensure status is treated as a string for comparison
+            const itemStatus = (item.Status || '').toString().trim().toLowerCase();
+            const isCompleted = itemStatus === 'completed';
+            
+            // NOTE: Using index + 2 as a mock row reference (row 1 is header)
             tableHTML += `<tr>
-                <td>${item.Date}</td>
-                <td>${item.Client}</td>
+                <td>${item.Date || 'N/A'}</td>
+                <td>${item['Client Name'] || 'N/A'}</td>
                 <td class="status-cell ${isCompleted ? 'status-complete-text' : 'status-pending-text'}">
-                    ${item.Status.toUpperCase()}
+                    ${(item.Status || 'PENDING').toUpperCase()}
                 </td>
                 <td>
                     ${isCompleted 
                         ? `<span class="completed-text">✅ Done</span>` 
-                        : `<button class="action-btn check-btn" onclick="toggleStatusLocal(${item.id}, 'Pending')" title="Mark Complete">&#10003;</button>`}
+                        // The action button uses the row index + 2 (since sheet starts at row 1)
+                        : `<button class="action-btn check-btn" onclick="toggleStatusLocal(${index}, 'Pending')" title="Mark Complete">&#10003;</button>`}
                 </td>
             </tr>`;
         });
@@ -320,7 +353,30 @@ function generateTableHTML(data, title, sheetId) {
     return `<h2>${title}</h2><p>Table view for ${sheetId} is not yet implemented. Use the form.</p>`;
 }
 
-function loadSheet(sheetId, sheetName) {
+/** * NEW: Loads only the form view, used after a successful submission.
+ */
+function loadSheetFormOnly(sheetId, sheetName) {
+    const container = document.getElementById('dataContainer');
+    // Ensure the navigation link is active
+    document.querySelectorAll('.sidebar li a').forEach(link => {
+        link.classList.remove('active');
+    });
+    const activeLink = document.getElementById(sheetId);
+    if (activeLink) activeLink.classList.add('active');
+    
+    // Only load the form without the table below it
+    if (sheetId === 'addNewTask') {
+        container.innerHTML = renderTaskForm();
+    } else if (sheetId === 'appRequired') {
+        container.innerHTML = renderApplicationForm();
+    } else if (sheetId === 'unappliedReceipts') {
+        container.innerHTML = renderReceiptForm();
+    }
+}
+
+
+// UPDATED: Now an async function that fetches live data before rendering
+async function loadSheet(sheetId, sheetName) {
     const container = document.getElementById('dataContainer');
     const mainHeader = document.getElementById('mainTitleHeader'); 
     
@@ -332,11 +388,19 @@ function loadSheet(sheetId, sheetName) {
     });
     const activeLink = document.getElementById(sheetId);
     if (activeLink) activeLink.classList.add('active');
+    
+    // Show Loading state while fetching data
+    container.innerHTML = '<h2>Loading Data...</h2><p style="text-align:center;">Please wait while we fetch the latest information.</p>';
 
-    // Load Forms
+
+    // --- Core Logic: Fetch and Display ---
     if (sheetId === 'addNewTask') {
-        // RENDER BOTH THE FORM AND THE TASK LIST TABLE
-        container.innerHTML = renderTaskForm() + generateTableHTML(dailyWorkCombined, 'My Daily Task', sheetId);
+        // Fetch live task data using the doGet method via GAS
+        const liveTaskData = await fetchSheetData(TASK_SHEET); 
+        
+        // RENDER BOTH THE FORM AND THE LIVE TASK LIST TABLE
+        container.innerHTML = renderTaskForm() + generateTableHTML(liveTaskData, 'My Daily Task', sheetId);
+
     } else if (sheetId === 'appRequired') {
         container.innerHTML = renderApplicationForm();
     } else if (sheetId === 'unappliedReceipts') {
@@ -344,11 +408,11 @@ function loadSheet(sheetId, sheetName) {
     }
     // Load Views 
     else if (sheetId === 'stationeryDetail') {
-        container.innerHTML = generateTableHTML(stationeryDetailData, sheetName, sheetId);
+        container.innerHTML = generateTableHTML(dailyWorkCombined, sheetName, sheetId);
     } 
     // Load Default/Fallback Views
     else {
-        container.innerHTML = generateTableHTML(dailyWorkCombined, sheetName, 'addNewTask'); // Show task list as default view
+        container.innerHTML = generateTableHTML(dailyWorkCombined, sheetName, 'addNewTask'); 
     }
 }
 
