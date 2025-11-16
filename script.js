@@ -251,7 +251,7 @@ function generateTableHTML(data, title, sheetId) {
              if (statusA === 'pending' && statusB !== 'pending') return -1;
              if (statusA !== 'pending' && statusB === 'pending') return 1;
              return 0; 
-         });
+         });;
          
          let tableHTML = `<h2 style="margin-top: 40px;">MY DAILY TASK PENDING LIST</h2>`;
 
