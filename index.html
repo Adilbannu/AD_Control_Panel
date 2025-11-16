@@ -1,14 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AD Data Manager - Control Panel</title>
+    <title>AD Data Manager - Daily Sheets</title>
     
     <link rel="stylesheet" href="./style.css">
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Oswald:wght@700;800&family=Lobster:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
     
 </head>
 <body>
@@ -41,14 +41,21 @@
         <div class="app-container">
             
             <nav class="sidebar">
-                <div class="logo">CONTROL PANEL</div>
+                <div class="logo-container">
+                    <img src="./logoimg.png" alt="ADIL Logo" class="logo-img">
+                    <div class="logo-text-wrapper">
+                        <span class="logo-main">CONTROL</span>
+                        <span class="logo-sub">PANEL</span>
+                    </div>
+                </div>
                 
                 <div class="user-profile">
-                    <div class="user-icon-container">
-                        <span class="user-shape"></span>
-                        <span class="gear-shape"></span>
+                    <div class="profile-pill-box">
+                        <div class="avatar-icon"></div> 
+                        <span class="username-pill">Admin User - ADIL</span>
+                        <span class="notification-bell">🔔</span>
                     </div>
-                    <span class="username">
+                    <span class="project-details">
                         <span class="main-title">Admin User -- ADIL</span>
                         <span class="sub-title">Complete AI Based</span>
                         <span class="sub-title">(Project 0001)</span>
@@ -59,6 +66,10 @@
             </nav>
 
             <main class="content">
+                <div id="arabic-blessing">
+                    <span id="arabic-text-animated">﷽</span>
+                </div>
+                
                 <div id="mainTitleHeader">
                     <h1>
                         <span id="typewriterText"></span>
