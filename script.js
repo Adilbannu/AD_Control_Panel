@@ -1,29 +1,30 @@
 // =================================================================
-// 1. CONFIGURATION & DATA (UPDATED)
+// 1. CONFIGURATION & DATA (RESTORED STABLE DEFAULTS)
 // =================================================================
 
-// *** CRITICAL: YOUR DEPLOYED GAS WEB APP URL ***
- 
+// *** NOTE: GAS API URL IS NO LONGER USED, BUT KEPT FOR REFERENCE ***
+const GAS_WEB_APP_ENDPOINT = 'YOUR_SINGLE_GAS_WEB_APP_URL_HERE'; 
 const TASK_SHEET = 'MY-DAILY-TASK'; 
 const APPLICATION_SHEET = 'APPLICATIONS';
 const RECEIPT_SHEET = 'RECEIPTS_MERGE';
-;
+
 // --- Auth Credentials ---
-const CORRECT_USERNAME = "Lac.Adil";
-const CORRECT_PASSWORD = "Bannu@123"; 
+const CORRECT_USERNAME = "Adil";
+const CORRECT_PASSWORD = "1234"; 
 
 
-// Sample data (temporary fallback only, used if GAS fetch fails)
+// Sample data (ONLY for local display and functionality, submissions are now disabled)
 let dailyWorkCombined = [
-    { Client: 'Sample Client (Local Fallback)', Status: 'Pending', Date: '2025-11-14' },
-    { Client: 'Example Co (Local Fallback)', Status: 'Completed', Date: '2025-11-13' },
+    { Client: 'Website Task 1 (Local)', Status: 'Pending', Date: '2025-11-16' },
+    { Client: 'Website Task 2 (Local)', Status: 'Completed', Date: '2025-11-15' },
+    { Client: 'Check Sidebar Links', Status: 'Pending', Date: '2025-11-16' },
 ];
 
 const unappliedReceiptsData = [ /* ... */ ]; 
 const stationeryDetailData = [ /* ... */ ];
-const personalData = [ /* ... */ ];;
+const personalData = [ /* ... */ ];
 
-// --- Navigation Structure (UNCHANGED) ---
+// --- Navigation Structure ---
 const sheets = [
     { name: "My Daily Task", id: "addNewTask", icon: "fas fa-list-check" },         
     { name: "Application Required", id: "appRequired", icon: "fas fa-file-invoice" },  
@@ -41,6 +42,7 @@ const sheets = [
 // =================================================================
 // 2. AUTHENTICATION LOGIC (UNCHANGED)
 // =================================================================
+
 function showCredentials(event) {
     event.preventDefault(); 
     const username = CORRECT_USERNAME;
@@ -52,6 +54,7 @@ function showCredentials(event) {
         "If you need to change these credentials, you must edit the 'script.js' file directly."
     );
 }
+
 
 function checkLogin() {
     const usernameInput = document.getElementById('username-input').value;
@@ -74,61 +77,28 @@ function checkLogin() {
 
 
 // =================================================================
-// 3. CORE UPDATE LOGIC (NEW)
+// 3. LOCAL STATUS UPDATE (Restored Local Update)
 // =================================================================
 
-/** * Marks a task as 'Completed' permanently in the Google Sheet.
- * @param {number} rowIndex The 1-based row index in the spreadsheet.
- */
-async function markCompleteLive(rowIndex) {
-    const confirmUpdate = confirm("Mark this task as COMPLETE?");
-    
-    if (!confirmUpdate) return;
-
-    const container = document.getElementById('dataContainer');
-    container.innerHTML = '<h2>Updating...</h2><p style="text-align:center;">Marking task as complete in Google Sheet.</p>';
-
-    try {
-        const response = await fetch(GAS_WEB_APP_ENDPOINT, {
-            method: 'POST',
-            body: JSON.stringify({ 
-                action: 'updateStatus', 
-                targetSheet: TASK_SHEET, 
-                rowIndex: rowIndex,
-                newStatus: 'Completed' // The new status value
-            }),
-            headers: { 'Content-Type': 'application/json' }
-        });
-        
-        const responseText = await response.text();
-        const data = JSON.parse(responseText);
-        
-        if (data.success) {
-            alert("Task marked complete successfully!");
-            // Reload the sheet to display the updated live data
-            loadSheet('addNewTask', 'My Daily Task'); 
-        } else {
-            throw new Error(data.message || 'Update failed on server.');
-        }
-    } catch (error) {
-        alert(`Error updating data: ${error.message}`);
-        console.error('Update Error:', error);
-        loadSheet('addNewTask', 'My Daily Task'); 
-    }
+function toggleStatusLocal(rowIndex, currentStatus) {
+    // This updates the local array instantly.
+    const index = rowIndex; 
+    dailyWorkCombined[index].Status = (currentStatus === 'Completed' ? 'Pending' : 'Completed');
+    loadSheet('addNewTask', 'My Daily Task'); 
 }
 
-// NOTE: The deleteRowLive function has been removed as per the user's request to switch to Mark Complete.
-
 
 // =================================================================
-// 4. CORE SUBMISSION HANDLERS (UNCHANGED)
+// 4. CORE SUBMISSION HANDLERS (REMOVED FETCH/API CALLS)
 // =================================================================
+
+/** Reusable success handler */
 function showSuccessScreen(taskType, targetSheet, loadNextId) {
     const container = document.getElementById('dataContainer');
     container.innerHTML = `
         <div class="form-container" style="text-align: center;">
-            <h2>✅ ${taskType} Submitted Successfully!</h2>
-            <p>Data saved to Google Sheet tab: <b>${targetSheet}</b></p>
+            <h2>⚠️ Submission is Local Only</h2>
+            <p>The form data was added to the website's local dashboard array but was NOT saved to the Google Sheet API.</p>
             <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
                 <button onclick="loadSheet('addNewTask', 'My Daily Task')" 
                         class="submit-btn" 
@@ -145,101 +115,78 @@ function showSuccessScreen(taskType, targetSheet, loadNextId) {
     `;
 }
 
-async function submitFormBase(formId, targetSheet, successMessage, loadNextId) {
+/** Base handler: Now ONLY saves to the local array. */
+function submitFormBase(formId, targetSheet, successMessage, loadNextId) {
     const form = document.getElementById(formId);
     const formData = new FormData(form);
     
-    formData.append('targetSheet', targetSheet); 
-    
-    const submitBtn = form.querySelector('.submit-btn');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Saving...';
-    submitBtn.disabled = true;
-
-    try {
-        const response = await fetch(GAS_WEB_APP_ENDPOINT, {
-            method: 'POST',
-            body: formData,
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        
-        const responseText = await response.text();
-        const data = JSON.parse(responseText);
-
-        if (data.success) {
-            form.reset(); 
-            showSuccessScreen(successMessage, targetSheet, loadNextId);
-        } else {
-            throw new Error(data.message || 'Submission failed on server.');
-        }
-
-    } catch (error) {
-        alert(`Error saving data. Check GAS deployment. Message: ${error.message}`);
-        console.error('Submission Error:', error);
-    } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
+    // --- LOCAL SUBMISSION ONLY ---
+    if (formId === 'taskForm') {
+        // Find the index of the item to ensure we get the correct data
+         const newTask = {
+            Client: formData.get('Client Name'),
+            Status: 'Pending',
+            Date: formData.get('Date'),
+         };
+         dailyWorkCombined.unshift(newTask); 
     }
+    
+    form.reset(); 
+    showSuccessScreen(successMessage, targetSheet, loadNextId);
 }
 
+// Specific Submission Calls for each form
 function submitTaskForm() {
     submitFormBase('taskForm', TASK_SHEET, 'Task', 'addNewTask');
 }
-// ... other submitForm functions (omitted for brevity) ...
+
+function submitApplicationForm() {
+    submitFormBase('applicationForm', APPLICATION_SHEET, 'Application', 'appRequired');
+}
+
+function submitReceiptForm() {
+    submitFormBase('receiptForm', RECEIPT_SHEET, 'Receipt', 'unappliedReceipts');
+}
 
 
 // =================================================================
-// 5. FORM RENDERING FUNCTIONS (UNCHANGED)
+// 5. FORM RENDERING FUNCTIONS
 // =================================================================
 const getToday = () => new Date().toISOString().split('T')[0];
-// ... renderTaskForm and others (omitted for brevity) ...
+
+function renderTaskForm() {
+    return `
+        <h2>MY DAILY TASK ENTRY</h2>
+        <div class="form-container">
+            <form id="taskForm" onsubmit="event.preventDefault(); submitTaskForm();">
+                <div class="form-group" style="display:none;">
+                    <label for="newDate">Date (Auto):</label>
+                    <input type="date" id="newDate" name="Date" value="${getToday()}" required>
+                </div>
+                <div class="form-group">
+                    <label for="newClientName">Task/Client Name:</label>
+                    <input type="text" id="newClientName" name="Client Name" required placeholder="e.g., Finalize design mockups">
+                </div>
+                <button type="submit" class="submit-btn">Save Task</button>
+            </form>
+        </div>
+    `;
+}
+// ... other renderForm functions (omitted for brevity) ...
 
 
 // =================================================================
-// 6. DATA TABLE AND SWITCHING LOGIC (UPDATED)
+// 6. DATA TABLE AND SWITCHING LOGIC (STABLE LOCAL RENDERING)
 // =================================================================
 
-/**
- * Converts ISO 8601 string (from GSheet) to a simple YYYY-MM-DD date.
- */
 function formatDate(isoString) {
     if (!isoString) return 'N/A';
     try {
-        // Creates a Date object, converts it to YYYY-MM-DD string
         return new Date(isoString).toISOString().split('T')[0];
     } catch (e) {
         return 'N/A';
     }
 }
-
-async function fetchSheetData(sheetName) {
-    const url = `${GAS_WEB_APP_ENDPOINT}?sheet=${sheetName}`;
-    
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        
-        const responseText = await response.text();
-        const data = JSON.parse(responseText);
-        
-        if (data.success && Array.isArray(data.data)) {
-            return data.data; 
-        } else {
-            console.error("GAS Fetch Error:", data.message || "Data not returned successfully.");
-            return [];
-        }
-    } catch (error) {
-        console.error("Network or Fetch Failed:", error);
-        alert("Could not load live data. Displaying local fallback data.");
-        return dailyWorkCombined; 
-    }
-}
-
 
 function generateTableHTML(data, title, sheetId) { 
     
@@ -251,33 +198,34 @@ function generateTableHTML(data, title, sheetId) {
              if (statusA === 'pending' && statusB !== 'pending') return -1;
              if (statusA !== 'pending' && statusB === 'pending') return 1;
              return 0; 
-         });;
+         });
          
          let tableHTML = `<h2 style="margin-top: 40px;">MY DAILY TASK PENDING LIST</h2>`;
 
-         if (data.length === 0) return tableHTML + `<p>No data available from sheet.</p>`;
+         if (data.length === 0) return tableHTML + `<p>No local data available.</p>`;
 
          tableHTML += `<table class="data-table">
                           <thead><tr>
                           <th>Date</th>
-                          <th>Client Name</th>
+                          <th>Client Name</th> 
                           <th>Status</th>
-                          <th>Action</th> </tr></thead><tbody>`;
+                          <th>Action</th>
+                          </tr></thead><tbody>`;
          
-         sortedData.forEach(item => {
+         sortedData.forEach((item, index) => {
             const itemStatus = (item.Status || '').toString().trim().toLowerCase();
             const isCompleted = itemStatus === 'completed';
             
             tableHTML += `<tr>
                 <td>${formatDate(item.Date)}</td>
-                <td>${item['Client Name'] || 'N/A'}</td>
+                <td>${item.Client || 'N/A'}</td>
                 <td class="status-cell ${isCompleted ? 'status-complete-text' : 'status-pending-text'}">
                     ${(item.Status || 'PENDING').toUpperCase()}
                 </td>
                 <td>
                     ${isCompleted
-                        ? `<span class="completed-text">✅ Done</span>` // Shows tick and text for completed
-                        : `<button class="action-btn check-btn" onclick="markCompleteLive(${item.rowIndex})" title="Mark Complete">&#10003;</button>` // Mark Complete Button
+                        ? `<span class="completed-text">✅ Done</span>` 
+                        : `<button class="action-btn check-btn" onclick="toggleStatusLocal(${index}, 'Pending')" title="Mark Complete">&#10003;</button>`
                     }
                 </td>
             </tr>`;
@@ -287,10 +235,10 @@ function generateTableHTML(data, title, sheetId) {
     }
     
     if (data.length === 0) return `<h2>${title}</h2><p>No data available.</p>`;
-    return `<h2>${title}</h2><p>Table view for ${sheetId} is not yet implemented. Use the form.</p>`;
+    return `<h2>${title}</h2><p>Table view for ${sheetId} is not yet implemented. Using local data.</p>`;
 }
 
-/** Loads only the form view, used after a successful submission. */
+/** Loads only the form view. */
 function loadSheetFormOnly(sheetId, sheetName) {
     const container = document.getElementById('dataContainer');
     document.querySelectorAll('.sidebar li a').forEach(link => {
@@ -306,8 +254,8 @@ function loadSheetFormOnly(sheetId, sheetName) {
 }
 
 
-// UPDATED: Now an async function that fetches live data before rendering
-async function loadSheet(sheetId, sheetName) {
+// Loads local data instantly, no API call
+function loadSheet(sheetId, sheetName) {
     const container = document.getElementById('dataContainer');
     const mainHeader = document.getElementById('mainTitleHeader'); 
     
@@ -319,13 +267,10 @@ async function loadSheet(sheetId, sheetName) {
     const activeLink = document.getElementById(sheetId);
     if (activeLink) activeLink.classList.add('active');
     
-    container.innerHTML = '<h2>Loading Data...</h2><p style="text-align:center;">Please wait while we fetch the latest information.</p>';
-
-    // --- Core Logic: Fetch and Display ---
+    // --- Core Logic: Render Form and Local Data ---
     if (sheetId === 'addNewTask') {
-        const liveTaskData = await fetchSheetData(TASK_SHEET); 
-        
-        container.innerHTML = renderTaskForm() + generateTableHTML(liveTaskData, 'My Daily Task', sheetId);
+        // Renders the form + the local dailyWorkCombined array instantly
+        container.innerHTML = renderTaskForm() + generateTableHTML(dailyWorkCombined, 'My Daily Task', sheetId);
 
     } 
     
@@ -338,4 +283,59 @@ async function loadSheet(sheetId, sheetName) {
 // =================================================================
 // 7. TYPING ANIMATION AND INITIALIZATION (UNCHANGED)
 // =================================================================
-// ... (Typing animation and DOMContentLoaded logic remains unchanged) ...
+const textElement = document.getElementById('typewriterText');
+const textToType = "Welcome to the AD Data Manager";
+const typingSpeed = 100; 
+const pauseTime = 5000; 
+
+let charIndex = 0;
+
+function typeWriter() {
+    if (!textElement) return; 
+    if (charIndex < textToType.length) {
+        textElement.textContent += textToType.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeWriter, typingSpeed);
+    } else {
+        setTimeout(startDeleting, pauseTime);
+    }
+}
+function startDeleting() {
+    if (charIndex > 0) {
+        textElement.textContent = textToType.substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(startDeleting, typingSpeed / 2); 
+    } else {
+        setTimeout(typeWriter, 500); 
+    }
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const sheetList = document.getElementById('sheetList');
+    sheets.forEach(sheet => {
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = "#"; 
+        link.id = sheet.id;
+        
+        const icon = document.createElement('i');
+        icon.className = sheet.icon + ' nav-icon'; 
+        
+        link.appendChild(icon); 
+        link.appendChild(document.createTextNode(sheet.name)); 
+
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            loadSheet(sheet.id, sheet.name);
+        });
+        listItem.appendChild(link);
+        sheetList.appendChild(listItem);
+    });
+    
+    const mainHeader = document.getElementById('mainTitleHeader');
+    if (mainHeader) {
+        const loginContainer = document.getElementById('login-container');
+        if (loginContainer) loginContainer.style.display = 'flex';
+    }
+
+    typeWriter(); 
+});
