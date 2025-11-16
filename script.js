@@ -3,7 +3,7 @@
 // =================================================================
 
 // *** CRITICAL: REPLACE THIS with your authorized Google Apps Script URL ***
-const GAS_WEB_APP_ENDPOINT = 'YOUR_SINGLE_GAS_WEB_APP_URL_HERE'; 
+const GAS_WEB_APP_ENDPOINT = 'Yhttps://script.google.com/macros/s/AKfycbxRKR7sqxYbEQu5UGvVKfyhqr9cLZSdpOdYjCeYwtoz0E1oqlfkNp_vlGwZz5bT-wBLdg/exec'; 
 const TASK_SHEET = 'DAILY_TASKS';
 const APPLICATION_SHEET = 'APPLICATIONS';
 const RECEIPT_SHEET = 'RECEIPTS_MERGE';
@@ -25,18 +25,18 @@ const unappliedReceiptsData = [
 const stationeryDetailData = [ /* ... */ ];
 const personalData = [ /* ... */ ];
 
-// --- Navigation Structure ---
+// --- Navigation Structure (UPDATED: Added 'icon' property) ---
 const sheets = [
-    { name: "My Daily Task", id: "addNewTask" },         
-    { name: "Application Required", id: "appRequired" },  
-    { name: "Unapplied Receipts", id: "unappliedReceipts" }, 
+    { name: "My Daily Task", id: "addNewTask", icon: "fas fa-list-check" },         
+    { name: "Application Required", id: "appRequired", icon: "fas fa-file-invoice" },  
+    { name: "Unapplied Receipts", id: "unappliedReceipts", icon: "fas fa-money-bill-transfer" }, 
     
     // Remaining old menu items
-    { name: "STATIONERY DETAIL", id: "stationeryDetail" },
-    { name: "RAJNI RUKSANA CHQ's", id: "rajniRuksanaChqs" },
-    { name: "MSQ RECEIPT'S", id: "msqReceipts" },
-    { name: "CHQ TO BE COLLECT", id: "chqToCollect" },
-    { name: "PERSONAL DATA", id: "personalData" }
+    { name: "STATIONERY DETAIL", id: "stationeryDetail", icon: "fas fa-pencil-ruler" },
+    { name: "RAJNI RUKSANA CHQ's", id: "rajniRuksanaChqs", icon: "fas fa-file-contract" },
+    { name: "MSQ RECEIPT'S", id: "msqReceipts", icon: "fas fa-receipt" },
+    { name: "CHQ TO BE COLLECT", id: "chqToCollect", icon: "fas fa-calendar-check" },
+    { name: "PERSONAL DATA", id: "personalData", icon: "fas fa-user-tie" }
 ];
 
 
@@ -120,6 +120,9 @@ function showSuccessScreen(taskType, targetSheet, loadNextId) {
             </div>
         </div>
     `;
+    // After successful submission, reload the task list to include the new item
+    // Note: Since this is local sample data, we'd need to mock the addition here if we wanted to see it instantly.
+    // For now, loadSheet('addNewTask', 'My Daily Task') reloads the view with the current local data.
 }
 
 /** Base handler for all form submissions */
@@ -142,6 +145,20 @@ async function submitFormBase(formId, targetSheet, successMessage, loadNextId) {
         const data = await response.json(); 
 
         if (data.success) {
+            
+            // --- Local update for immediate feedback on the task dashboard ---
+            if (formId === 'taskForm') {
+                 // Mock adding a new item to the local list (assuming this app is connected to the sheet for real data)
+                 const newTask = {
+                    id: dailyWorkCombined.length + 1, // Simple mock ID
+                    Client: formData.get('Client Name'),
+                    Status: 'Pending',
+                    Date: formData.get('Date'),
+                 };
+                 dailyWorkCombined.unshift(newTask); // Add to the start
+            }
+            // --- End Local Update ---
+
             form.reset(); 
             showSuccessScreen(successMessage, targetSheet, loadNextId);
         } else {
@@ -252,16 +269,36 @@ function renderReceiptForm() {
 
 
 // =================================================================
-// 6. DATA TABLE AND SWITCHING LOGIC
+// 6. DATA TABLE AND SWITCHING LOGIC (UPDATED)
 // =================================================================
 
 function generateTableHTML(data, title, sheetId) { 
-    if (data.length === 0) return `<h2>${title}</h2><p>No data available.</p>`;
     
-    // Simplified table generation for the daily tasks view
+    // Updated table generation for the daily tasks view (to match image style)
     if (sheetId === 'addNewTask') {
-         let tableHTML = `<h2>MY DAILY TASK</h2><table class="data-table"><thead><tr><th>Date</th><th>Client</th><th>Status</th><th>Action</th></tr></thead><tbody>`;
-         data.forEach(item => {
+         // Filter and sort the data for better display (Pending tasks first)
+         const sortedData = data.sort((a, b) => {
+             // If A is Pending and B is not, A comes first
+             if (a.Status === 'Pending' && b.Status !== 'Pending') return -1;
+             // If B is Pending and A is not, B comes first
+             if (a.Status !== 'Pending' && b.Status === 'Pending') return 1;
+             // Otherwise, they are equal in priority (keep original order)
+             return 0; 
+         });
+         
+         let tableHTML = `<h2 style="margin-top: 40px;">MY DAILY TASK PENDING LIST</h2>`;
+
+         if (data.length === 0) return tableHTML + `<p>No data available.</p>`;
+
+         tableHTML += `<table class="data-table">
+                          <thead><tr>
+                          <th>Date</th>
+                          <th>Client</th>
+                          <th>Status</th>
+                          <th>Action</th>
+                          </tr></thead><tbody>`;
+         
+         sortedData.forEach(item => {
             const isCompleted = item.Status === 'Completed';
             tableHTML += `<tr>
                 <td>${item.Date}</td>
@@ -271,7 +308,9 @@ function generateTableHTML(data, title, sheetId) {
                 </td>
                 <td>
                     ${isCompleted 
+                        // The COMPLETED row HTML
                         ? `<span class="completed-text">✅ Done</span>` 
+                        // The PENDING row HTML with the interactive button
                         : `<button class="action-btn check-btn" onclick="toggleStatusLocal(${item.id}, 'Pending')" title="Mark Complete">&#10003;</button>`}
                 </td>
             </tr>`;
@@ -281,6 +320,7 @@ function generateTableHTML(data, title, sheetId) {
     }
     
     // Fallback for other views
+    if (data.length === 0) return `<h2>${title}</h2><p>No data available.</p>`;
     return `<h2>${title}</h2><p>Table view for ${sheetId} is not yet implemented. Use the form.</p>`;
 }
 
@@ -299,7 +339,8 @@ function loadSheet(sheetId, sheetName) {
 
     // Load Forms
     if (sheetId === 'addNewTask') {
-        container.innerHTML = renderTaskForm();
+        // RENDER BOTH THE FORM AND THE TASK LIST TABLE
+        container.innerHTML = renderTaskForm() + generateTableHTML(dailyWorkCombined, 'My Daily Task', sheetId);
     } else if (sheetId === 'appRequired') {
         container.innerHTML = renderApplicationForm();
     } else if (sheetId === 'unappliedReceipts') {
@@ -317,7 +358,7 @@ function loadSheet(sheetId, sheetName) {
 
 
 // =================================================================
-// 7. TYPING ANIMATION AND INITIALIZATION
+// 7. TYPING ANIMATION AND INITIALIZATION (UPDATED: Link rendering)
 // =================================================================
 const textElement = document.getElementById('typewriterText');
 const textToType = "Welcome to the AD Data Manager";
@@ -352,7 +393,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const link = document.createElement('a');
         link.href = "#"; 
         link.id = sheet.id;
-        link.textContent = sheet.name;
+        
+        // --- NEW: Create the icon element and append it ---
+        const icon = document.createElement('i');
+        icon.className = sheet.icon + ' nav-icon'; // Use the icon property from the sheets array
+        
+        link.appendChild(icon); // Add the icon before the text
+        
+        link.appendChild(document.createTextNode(sheet.name)); // Add the sheet name text
+        // --- END NEW ---
+
         link.addEventListener('click', (e) => {
             e.preventDefault(); 
             loadSheet(sheet.id, sheet.name);
