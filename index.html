@@ -3,90 +3,389 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AD Data Manager - Daily Sheets</title>
-    
-    <link rel="stylesheet" href="./style.css">
-    
+    <title>Adil Zaman - Document Controller Portfolio & Control Panel</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Oswald:wght@700;800&family=Lobster:wght@400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="login-container">
-        <div class="form-container" id="login-box">
-            <h2>CONTROL PANEL LOGIN</h2>
-            <form id="login-form" onsubmit="event.preventDefault(); checkLogin();">
-                <div class="form-group">
-                    <label for="username-input">Username</label>
-                    <input type="text" id="username-input" required>
+    <div id="portfolio-container">
+        
+        <header id="header">
+            <div class="container">
+                <div class="header-content">
+                    <h1>Adil Zaman</h1>
+                    <h2>Document Controller</h2>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +971 56 203 5433</p>
+                        <p><i class="fas fa-envelope"></i> adil.zaman@example.com</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Ras Al Khor, Dubai, UAE</p>
+                    </div>
+                    <div class="header-buttons">
+                        <a href="#about" class="btn">Learn More</a>
+                        <a href="#contact" class="btn btn-secondary">Contact Me</a>
+                        <button id="openLoginBtn" class="btn btn-secondary login-button-portfolio">Control Panel Login</button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="password-input">Password</label>
-                    <input type="password" id="password-input" required>
-                </div>
-                <button type="submit" class="submit-btn" id="login-button">Log In</button>
-                <p id="login-error" style="color: #f44336; text-align: center; margin-top: 10px; display: none;">Invalid Username or Password.</p>
-                
-                <p style="text-align: center; margin-top: 15px;">
-                    <a href="#" onclick="showCredentials(event)" style="color: #3498db; font-size: 0.9em; text-decoration: none;">
-                        Forgot Username / Password?
-                    </a>
-                </p>
-            </form>
-        </div>
-    </div> 
+            </div>
+        </header>
 
-    <div id="app-wrapper" style="display: none;"> 
-        <div class="app-container">
-            
-            <nav class="sidebar">
-                <div class="logo-container">
-                    <img src="./logoimg2.png" alt="ADIL Logo" class="logo-img">
-                    <div class="logo-text-wrapper">
-                        <span class="logo-main">CONTROL</span>
-                        <span class="logo-sub">PANEL</span>
-                    </div>
+        <nav id="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h2>Adil Zaman</h2>
                 </div>
-                
-                <div class="user-profile">
-                    <div class="profile-pill-box">
-                        <div class="avatar-icon"></div> 
-                        <span class="username-pill">Admin User - ADIL</span>
-                        <span class="notification-bell">🔔</span>
-                    </div>
-                    <span class="project-details">
-                        <span class="main-title">Admin User -- ADIL</span>
-                        <span class="sub-title">Complete AI Based</span>
-                        <span class="sub-title">(Project 0001)</span>
-                    </span>
-                </div>
-                <ul id="sheetList">
+                <ul class="nav-menu">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
-            </nav>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
 
-            <main class="content">
-                <div id="arabic-blessing">
-                    <span id="arabic-text-animated">﷽</span>
+        <section id="about" class="section">
+            <div class="container">
+                <h2 class="section-title">Professional Summary</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Detail-oriented and highly organized Document Controller with 3+ years of experience in managing document workflows, logistics coordination, and financial documentation within a fast-paced corporate environment.</p>
+                        <p>Proven expertise in ensuring the accuracy, accessibility, and timely submission of critical documents. Adept at collaborating with sales, finance, and operations teams to streamline processes and improve payment collection cycles.</p>
+                    </div>
+                    <div class="about-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
                 </div>
-                
-                <div id="mainTitleHeader">
-                    <h1>
-                        <span id="typewriterText"></span>
-                        <span class="cursor">|</span>
-                    </h1>
-                    <p>Select a sheet from the sidebar to view your data.</p>
+            </div>
+        </section>
+
+        <section id="experience" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Work Experience</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2021 – 2024</div>
+                        <div class="timeline-content">
+                            <h3>Document Controller</h3>
+                            <h4>Al Shirawi Group / Leminar Global (Sub-group) | Dubai, UAE</h4>
+                            <ul>
+                                <li>Managed the end-to-end document control cycle for sales and delivery processes</li>
+                                <li>Streamlined collection process for payments, reducing pending cash sales over 30 days by 30%</li>
+                                <li>Coordinated with Sales Engineers and Coordinators for timely document submissions</li>
+                                <li>Maintained and updated key trackers with 100% accuracy in financial record-keeping</li>
+                                <li>Processed intercompany invoices and followed up on payments</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2021</div>
+                        <div class="timeline-content">
+                            <h3>Office Clerk Assistant</h3>
+                            <h4>Right Move | Business Bay, Dubai, UAE</h4>
+                            <ul>
+                                <li>Supported daily administrative operations</li>
+                                <li>Assisted in document management and filing</li>
+                                <li>Managed incoming and outgoing correspondence</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                
-                <div id="dataContainer">
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <div class="container">
+                <h2 class="section-title">Skills & Expertise</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3><i class="fas fa-file-alt"></i> Document & Record Management</h3>
+                        <ul>
+                            <li>Invoice Processing</li>
+                            <li>DO/LPO Tracking</li>
+                            <li>Receipt Management</li>
+                            <li>Legal Documentation</li>
+                            <li>Filing Systems</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-chart-line"></i> Financial Administration</h3>
+                        <ul>
+                            <li>Payment Collection</li>
+                            <li>Petty Cash Management</li>
+                            <li>Accounts Reconciliation</li>
+                            <li>Credit/Debit Notes</li>
+                            <li>SOA Preparation</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-laptop"></i> Software & Tools</h3>
+                        <ul>
+                            <li>Microsoft Office Suite</li>
+                            <li>Oracle</li>
+                            <li>Document Management Systems</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-globe"></i> Languages</h3>
+                        <ul>
+                            <li>English: Proficient</li>
+                            <li>Hindi: Proficient</li>
+                            <li>Arabic: Intermediate</li>
+                            <li>Chinese (Mandarin): Beginner</li>
+                        </ul>
+                    </div>
                 </div>
-            </main>
-            
+            </div>
+        </section>
+
+        <section id="education" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Education</h2>
+                <div class="education-item">
+                    <h3>Information Technology</h3>
+                    <h4>Technical Board Peshawar | Peshawar</h4>
+                    <p class="education-date">2020 – 2021</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Contact Information</h3>
+                        <p><i class="fas fa-phone"></i> +971 56 203 5433</p>
+                        <p><i class="fas fa-envelope"></i> adil.zaman@example.com</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Ras Al Khor, Dubai, UAE</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <input type="text" id="name" placeholder="Your Name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="email" placeholder="Your Email" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer id="footer">
+            <div class="container">
+                <p>&copy; 2024 Adil Zaman. All Rights Reserved.</p>
+                <p>Document Controller Portfolio</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-login">
+        <div class="modal-content-login">
+            <span class="close-btn-login" id="closeLoginBtn">&times;</span>
+            <div class="login-form-container">
+                <h2>Control Panel Access</h2>
+                <form id="loginForm">
+                    <p class="login-instruction">Enter your secure credentials.</p>
+                    
+                    <div class="input-group">
+                        <label for="adminUsername"><i class="icon fas fa-user-shield"></i> Username</label>
+                        <input type="text" id="adminUsername" name="username" placeholder="Admin Username" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="adminPassword"><i class="icon fas fa-lock"></i> Password</label>
+                        <input type="password" id="adminPassword" name="password" placeholder="Secure Password" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn-login">Secure Login</button>
+                    <p id="loginMessage" class="login-message"></p>
+                </form>
+            </div>
         </div>
-    </div> 
+    </div>
 
-    <script src="./script.js"></script>
+    <!-- Control Panel App -->
+    <div id="control-panel-app" style="display: none;">
+        <div id="app-wrapper"> 
+            <div class="app-container">
+                
+                <nav class="sidebar">
+                    <div class="logo-container">
+                        <div class="logo-img-placeholder">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div class="logo-text-wrapper">
+                            <span class="logo-main">ADIL</span>
+                            <span class="logo-sub">CONTROL PANEL</span>
+                        </div>
+                    </div>
+                    
+                    <div class="user-profile">
+                        <div class="profile-pill-box">
+                            <div class="avatar-icon"><i class="fas fa-user-tie"></i></div> 
+                            <span class="username-pill">Admin Adil</span>
+                            <span class="notification-bell">🔔</span> 
+                        </div>
+                        <span class="project-details">
+                            <span class="main-title">Professional Toolkit</span>
+                            <span class="sub-title">Document Control System</span>
+                        </span>
+                    </div>
+                    
+                    <ul id="sheetList">
+                        <!-- Navigation will be populated by JavaScript -->
+                    </ul>
+                    
+                    <div class="sidebar-footer">
+                        <button onclick="handleLogout()" class="btn-danger-logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout System
+                        </button>
+                    </div>
+                </nav>
+
+                <main class="content">
+                    <div class="search-container">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="globalSearch" placeholder="Search everything...">
+                        </div>
+                    </div>
+                    
+                    <div id="arabic-header-container">
+                        <span id="tawhid-text" class="arabic-phrase">لا إله إلا الله</span>
+                        <span id="bismillah-text" class="arabic-phrase">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</span>
+                    </div>
+
+                    <div id="mainTitleHeader">
+                        <h1>
+                            <span id="typewriterText"></span>
+                            <span class="cursor">|</span>
+                        </h1>
+                        <p>Your Complete Document Control Solution</p>
+                    </div>
+                    
+                    <div id="dataContainer">
+                        <!-- Content will be loaded here -->
+                    </div>
+                </main>
+            </div>
+        </div>
+        
+        <!-- Schedule Modal -->
+        <div id="scheduleModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>📅 Add New Schedule</h3>
+                    <span class="close-modal" onclick="closeScheduleModal()">&times;</span>
+                </div>
+                <form id="scheduleForm">
+                    <div class="form-group">
+                        <label for="scheduleTitle">📌 Title:</label>
+                        <input type="text" id="scheduleTitle" required placeholder="e.g., Submit DO 4567 to GM">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="scheduleDescription">📝 Description:</label>
+                        <textarea id="scheduleDescription" rows="3" placeholder="Optional details"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="scheduleDate">📅 Date:</label>
+                            <input type="date" id="scheduleDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="scheduleTime">⏰ Time:</label>
+                            <input type="time" id="scheduleTime" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="scheduleRepeat">🔁 Repeat:</label>
+                            <select id="scheduleRepeat">
+                                <option value="none">No repeat</option>
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="scheduleReminder">⏳ Reminder:</label>
+                            <select id="scheduleReminder">
+                                <option value="5">5 minutes before</option>
+                                <option value="10">10 minutes before</option>
+                                <option value="30" selected>30 minutes before</option>
+                                <option value="60">1 hour before</option>
+                                <option value="1440">1 day before</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scheduleCategory">📂 Category:</label>
+                        <select id="scheduleCategory" required>
+                            <option value="document" data-color="#3498db">📄 Document Submission</option>
+                            <option value="invoice" data-color="#e67e22">🧾 Invoice / DO Work</option>
+                            <option value="email" data-color="#f1c40f">📨 Email Follow-up</option>
+                            <option value="meeting" data-color="#9b59b6">👥 Meeting</option>
+                            <option value="deadline" data-color="#e74c3c">🏗️ Project Deadlines</option>
+                            <option value="hr" data-color="#2ecc71">🧑‍💼 HR / Admin</option>
+                            <option value="other" data-color="#95a5a6">🛠️ Others</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" onclick="closeScheduleModal()" class="btn-secondary">Cancel</button>
+                        <button type="submit" class="btn-primary">💾 Save Schedule</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Reminder Notification -->
+        <div id="reminderNotification" class="reminder-alert">
+            <div class="reminder-content">
+                <div class="reminder-header">
+                    <span class="reminder-icon">🔔</span>
+                    <h4>Reminder</h4>
+                    <span class="close-reminder" onclick="closeReminder()">&times;</span>
+                </div>
+                <div class="reminder-body">
+                    <h5 id="reminderTitle"></h5>
+                    <p id="reminderDetails"></p>
+                </div>
+                <div class="reminder-actions">
+                    <button onclick="snoozeReminder()" class="btn-secondary">Snooze (10 min)</button>
+                    <button onclick="completeReminder()" class="btn-primary">Mark Complete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
