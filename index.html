@@ -3,682 +3,1806 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adil Zaman - Document Controller | 6+ Years Experience</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <div id="portfolio-container">
+    <title>Bannu Digital Skills Academy - Complete Platform</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Main CSS -->
+    <style>
+        /* ======================================================= */
+        /* COMPLETE CSS FOR ENTIRE PLATFORM                        */
+        /* ======================================================= */
         
-        <header id="header">
-            <div class="connecting-dots-animation" id="connectingDots">
-            </div>
-            <div class="container">
-                <div class="header-content">
-                    <div class="expert-badge">
-                        <div class="badge-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <span>Document Controller | 6+ Years Experience</span>
-                    </div>
-                    <h1>Adil Zaman</h1>
-                    <h2>Document Controller & Process Specialist</h2>
-                    
-                    <div class="skills-highlight">
-                        <div class="skill-tag">
-                            <i class="fas fa-bolt"></i>
-                            77+ WPM Typing Speed
-                        </div>
-                        <div class="skill-tag">
-                            <i class="fas fa-crosshairs"></i>
-                            99% Accuracy Rate
-                        </div>
-                        <div class="skill-tag">
-                            <i class="fas fa-award"></i>
-                            6+ Years Experience
-                        </div>
-                    </div>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-                    <div class="contact-info">
-                        <div class="contact-item-header">
-                            <i class="fas fa-phone"></i>
-                            <span>+971 56 203 5433</span>
-                        </div>
-                        <div class="contact-item-header">
-                            <i class="fas fa-envelope"></i>
-                            <span>Adilbannusai81@gmail.com</span>
-                        </div>
-                        <div class="contact-item-header">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Ras Al Khor, Dubai, UAE</span>
-                        </div>
-                    </div>
-                    
-                    <div class="header-buttons">
-                        <a href="#about" class="btn pulse-animation">
-                            <i class="fas fa-user"></i> View Profile
-                        </a>
-                        <button id="openLoginBtn" class="btn btn-secondary login-button-portfolio">
-                            <i class="fas fa-lock"></i> Control Panel
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </header>
+        :root {
+            /* Color Palette */
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --info: #17a2b8;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --white: #ffffff;
+            --black: #333333;
+            
+            /* Theme Variables */
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --border-color: #dee2e6;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            
+            /* Borders */
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            
+            /* Transitions */
+            --transition: all 0.3s ease;
+            
+            /* Fonts */
+            --font-primary: 'Poppins', sans-serif;
+        }
 
-        <nav id="navbar">
-            <div class="container">
-                <div class="nav-brand">
-                    <div class="logo-mini">
-                        <img src="logoimg2.png" alt="Adil Zaman Logo" class="nav-logo">
-                        <span>Adil Zaman</span>
-                    </div>
-                </div>
-                <ul class="nav-menu">
-                    <li><a href="#about"><i class="fas fa-user"></i> About</a></li>
-                    <li><a href="#experience"><i class="fas fa-briefcase"></i> Experience</a></li>
-                    <li><a href="#skills"><i class="fas fa-star"></i> Skills</a></li>
-                    <li><a href="#achievements"><i class="fas fa-trophy"></i> Achievements</a></li>
-                    <li><a href="#education"><i class="fas fa-graduation-cap"></i> Education</a></li>
-                    <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
-                </ul>
-                <div class="nav-actions">
-                    <button id="themeToggle" class="theme-toggle">
-                        <i class="fas fa-moon"></i>
+        [data-theme="dark"] {
+            --primary: #3498db;
+            --secondary: #2980b9;
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2c3e50;
+            --border-color: #34495e;
+            --light: #34495e;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+        .p-1 { padding: 0.5rem; }
+        .p-2 { padding: 1rem; }
+        .p-3 { padding: 1.5rem; }
+        .p-4 { padding: 2rem; }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.75rem; }
+        h4 { font-size: 1.5rem; }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--primary);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check-input {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Tables */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table th {
+            font-weight: 600;
+            background-color: var(--light);
+            color: var(--text-color);
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        [data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .badge-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .badge-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .badge-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .badge-danger {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background-color: rgba(39, 174, 96, 0.1);
+            border-left-color: var(--success);
+            color: #155724;
+        }
+
+        .alert-info {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left-color: var(--secondary);
+            color: #0c5460;
+        }
+
+        .alert-warning {
+            background-color: rgba(243, 156, 18, 0.1);
+            border-left-color: var(--warning);
+            color: #856404;
+        }
+
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left-color: var(--accent);
+            color: #721c24;
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        .close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .logo i {
+            color: var(--secondary);
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--secondary);
+        }
+
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--text-color);
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--light);
+        }
+
+        /* Main Layout */
+        .main-content {
+            min-height: calc(100vh - 200px);
+            padding: 2rem 0;
+        }
+
+        /* Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background-color: var(--light);
+            border-left-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .main-panel {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-icon.primary { background-color: var(--secondary); }
+        .stat-icon.success { background-color: var(--success); }
+        .stat-icon.warning { background-color: var(--warning); }
+        .stat-icon.danger { background-color: var(--accent); }
+
+        .stat-info h3 {
+            margin: 0;
+            font-size: 1.75rem;
+            color: var(--text-color);
+        }
+
+        .stat-info p {
+            margin: 0;
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .navbar .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+                width: 100%;
+                display: none;
+            }
+            
+            .nav-menu.show {
+                display: flex;
+            }
+            
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            
+            .main-panel {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--light);
+            border-top-color: var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            border-bottom-color: var(--secondary);
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Progress Bar */
+        .progress {
+            height: 8px;
+            background-color: var(--light);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--secondary);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Course Cards */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .course-image {
+            height: 160px;
+            background-color: var(--light);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .course-content {
+            padding: 1.5rem;
+        }
+
+        .course-title {
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .course-description {
+            color: var(--gray);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        /* Zoom Meeting Cards */
+        .meeting-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--secondary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .meeting-card.live {
+            border-left-color: var(--success);
+        }
+
+        .meeting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .meeting-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .meeting-status.upcoming {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+        }
+
+        .meeting-status.live {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+        }
+
+        /* Chat System */
+        .chat-container {
+            display: flex;
+            height: 600px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chat-sidebar {
+            width: 300px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chat-item:hover,
+        .chat-item.active {
+            background-color: var(--light);
+        }
+
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius);
+            position: relative;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left: 3px solid var(--secondary);
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background-color: var(--light);
+            border-left: 3px solid var(--gray);
+        }
+
+        .message-sender {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-color);
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-align: right;
+            margin-top: 0.25rem;
+        }
+
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        /* Assignment Cards */
+        .assignment-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--warning);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .assignment-due {
+            font-size: 0.875rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .assignment-submitted {
+            font-size: 0.875rem;
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        /* Quiz Cards */
+        .quiz-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--info);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .quiz-questions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        /* Certificate Cards */
+        .certificate-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--success);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .certificate-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Attendance Table */
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .attendance-table th,
+        .attendance-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .attendance-present {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+        }
+
+        .attendance-absent {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--accent);
+        }
+
+        /* Notification Center */
+        .notifications-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .notification-item.unread {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .notification-icon {
+            color: var(--secondary);
+            font-size: 1.25rem;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-time {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        /* Print Styles for Certificates */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            .certificate-print,
+            .certificate-print * {
+                visibility: visible;
+            }
+            
+            .certificate-print {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid;
+            animation: fadeIn 0.3s ease;
+            min-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .toast-success {
+            border-left-color: var(--success);
+        }
+
+        .toast-error {
+            border-left-color: var(--accent);
+        }
+
+        .toast-warning {
+            border-left-color: var(--warning);
+        }
+
+        .toast-info {
+            border-left-color: var(--secondary);
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        .toast-success .toast-icon { color: var(--success); }
+        .toast-error .toast-icon { color: var(--accent); }
+        .toast-warning .toast-icon { color: var(--warning); }
+        .toast-info .toast-icon { color: var(--secondary); }
+
+        .toast-message {
+            flex: 1;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload:hover {
+            border-color: var(--secondary);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .file-upload i {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Rating Stars */
+        .rating {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .rating i {
+            color: var(--warning);
+        }
+
+        .rating i.far {
+            color: var(--border-color);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -0.5rem;
+            top: 0;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            border: 2px solid var(--card-bg);
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Page Loader */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Wizard Steps */
+        .wizard {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .wizard::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--border-color);
+            z-index: 1;
+        }
+
+        .wizard-step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            flex: 1;
+        }
+
+        .wizard-step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: 600;
+        }
+
+        .wizard-step.active .wizard-step-number {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .wizard-step.completed .wizard-step-number {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .wizard-step-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .wizard-step.active .wizard-step-label {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        /* Drag and Drop */
+        .drag-drop-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .drag-drop-zone.dragover {
+            border-color: var(--secondary);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        /* Search Box */
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            min-width: 150px;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .page-link {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .page-link:hover {
+            background-color: var(--light);
+        }
+
+        .page-link.active {
+            background-color: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        /* Tooltips */
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem;
+            background-color: var(--dark);
+            color: white;
+            border-radius: var(--border-radius);
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 5px);
+        }
+
+        /* Media Queries */
+        @media (max-width: 480px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.75rem; }
+            h3 { font-size: 1.5rem; }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+            
+            .card {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .navbar,
+            .footer,
+            .btn,
+            .no-print {
+                display: none !important;
+            }
+            
+            body {
+                background-color: white !important;
+                color: black !important;
+            }
+            
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <!-- Page Loader -->
+    <div id="pageLoader" class="page-loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-laptop-code"></i>
+                <span>Bannu Digital Academy</span>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#courses"><i class="fas fa-book"></i> Courses</a></li>
+                <li><a href="#zoom"><i class="fas fa-video"></i> Zoom</a></li>
+                <li><a href="#assignments"><i class="fas fa-tasks"></i> Assignments</a></li>
+                <li><a href="#quizzes"><i class="fas fa-question-circle"></i> Quizzes</a></li>
+                <li><a href="#chat"><i class="fas fa-comments"></i> Chat</a></li>
+                <li><a href="#certificates"><i class="fas fa-certificate"></i> Certificates</a></li>
+                <li><a href="#attendance"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
+                <li><a href="#notifications"><i class="fas fa-bell"></i> Notifications</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <div class="dropdown">
+                    <button class="btn btn-secondary" id="userMenuBtn">
+                        <i class="fas fa-user"></i>
+                        <span>Login</span>
                     </button>
-                    <div class="hamburger">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
                 </div>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <section id="about" class="section">
-            <div class="container">
-                <h2 class="section-title">Professional Profile</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p class="highlight">Document Controller with <strong>6+ years</strong> of comprehensive experience in managing complex document workflows, financial documentation, and process optimization within multinational corporate environments.</p>
-                        
-                        <div class="key-strengths">
-                            <h3>Key Strengths:</h3>
-                            <div class="strength-grid">
-                                <div class="strength-item">
-                                    <i class="fas fa-bolt"></i>
-                                    <div>
-                                        <strong>77+ WPM Typing Speed</strong>
-                                        <span>Exceptional data entry efficiency</span>
-                                    </div>
-                                </div>
-                                <div class="strength-item">
-                                    <i class="fas fa-crosshairs"></i>
-                                    <div>
-                                        <strong>99% Accuracy Rate</strong>
-                                        <span>Flawless document processing</span>
-                                    </div>
-                                </div>
-                                <div class="strength-item">
-                                    <i class="fas fa-chart-line"></i>
-                                    <div>
-                                        <strong>Process Optimization</strong>
-                                        <span>Streamlined workflows & systems</span>
-                                    </div>
-                                </div>
-                                <div class="strength-item">
-                                    <i class="fas fa-users"></i>
-                                    <div>
-                                        <strong>Team Leadership</strong>
-                                        <span>Cross-functional coordination</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p>Expert in ensuring absolute accuracy, accessibility, and timely submission of critical business documents. Proven track record in collaborating with sales, finance, and operations teams to streamline processes and enhance operational efficiency.</p>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Login Modal -->
+            <div id="loginModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Login to Bannu Academy</h3>
+                        <button class="close" id="closeLoginModal">&times;</button>
                     </div>
-                    <div class="about-image">
-                        <div class="image-container">
-                            <img src="Adil-Photo.jpg" alt="Adil Zaman" class="profile-photo">
-                            <div class="availability-badge">
-                                <i class="fas fa-check-circle"></i>
-                                Available for Positions
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="experience" class="section bg-light">
-            <div class="container">
-                <h2 class="section-title">Professional Experience</h2>
-                <div class="timeline">
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-date">2021 – Present</div>
-                        <div class="timeline-content">
-                            <div class="company-logo">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <h3>Document Controller</h3>
-                            <h4>Al Shirawi Group / Leminar Global | Dubai, UAE</h4>
-                            <div class="achievement-badges">
-                                <span class="badge success">Process Leadership</span>
-                                <span class="badge warning">Team Management</span>
-                                <span class="badge info">Strategic Planning</span>
-                            </div>
-                            <ul>
-                                <li>Led end-to-end document control cycle for enterprise-level sales and delivery processes</li>
-                                <li>Implemented advanced tracking systems reducing document processing time by 40%</li>
-                                <li>Mentored and supervised junior document control staff (team of 5)</li>
-                                <li>Streamlined payment collection process, reducing pending cash sales over 30 days by 35%</li>
-                                <li>Coordinated cross-functional teams ensuring 100% compliance with document standards</li>
-                                <li>Developed and implemented document management policies adopted group-wide</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">2018 – 2021</div>
-                        <div class="timeline-content">
-                            <div class="company-logo">
-                                <i class="fas fa-briefcase"></i>
-                            </div>
-                            <h3>Document Controller</h3>
-                            <h4>Right Move | Business Bay, Dubai, UAE</h4>
-                            <div class="achievement-badges">
-                                <span class="badge info">System Implementation</span>
-                                <span class="badge success">Process Improvement</span>
-                            </div>
-                            <ul>
-                                <li>Managed comprehensive document control systems for administrative operations</li>
-                                <li>Reduced document retrieval time by 50% through systematic filing implementation</li>
-                                <li>Processed 200+ documents weekly with 99.8% accuracy rate</li>
-                                <li>Implemented digital archiving system reducing physical storage needs by 60%</li>
-                                <li>Coordinated with multiple departments ensuring seamless document flow</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">2016 – 2018</div>
-                        <div class="timeline-content">
-                            <div class="company-logo">
-                                <i class="fas fa-file-alt"></i>
-                            </div>
-                            <h3>Document Control Assistant</h3>
-                            <h4>Business First Solutions | Dubai, UAE</h4>
-                            <div class="achievement-badges">
-                                <span class="badge warning">Quality Control</span>
-                                <span class="badge info">Technical Skills</span>
-                            </div>
-                            <ul>
-                                <li>Supported senior document controllers in daily operations</li>
-                                <li>Maintained 100% accuracy in data entry and document processing</li>
-                                <li>Assisted in implementing ISO-compliant document control procedures</li>
-                                <li>Processed invoices, DOs, and financial documents with precision</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="skills" class="section">
-            <div class="container">
-                <h2 class="section-title">Core Competencies & Skills</h2>
-                <div class="skills-grid">
-                    
-                    <div class="skill-category">
-                        <h3><i class="fas fa-laptop-code"></i> Technical Expertise</h3>
-                        <div class="skill-level">
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="95"></div>
-                            </div>
-                            <span>95%</span>
-                        </div>
-                        <ul>
-                            <li>Microsoft Office Suite (Advanced)</li>
-                            <li>Oracle Document Management</li>
-                            <li>ERP Systems Integration</li>
-                            <li>Advanced Excel & Macros</li>
-                            <li>Document Management Software</li>
-                        </ul>
-                    </div>
-
-                    <div class="skill-category">
-                        <h3><i class="fas fa-file-contract"></i> Document Control</h3>
-                        <div class="skill-level">
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="98"></div>
-                            </div>
-                            <span>98%</span>
-                        </div>
-                        <ul>
-                            <li>End-to-End Document Lifecycle</li>
-                            <li>Quality Assurance & Control</li>
-                            <li>Compliance & Standards</li>
-                            <li>Version Control Systems</li>
-                            <li>Archiving & Retrieval</li>
-                        </ul>
-                    </div>
-
-                    <div class="skill-category">
-                        <h3><i class="fas fa-tachometer-alt"></i> Speed & Accuracy</h3>
-                        <div class="skill-level">
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="99"></div>
-                            </div>
-                            <span>99%</span>
-                        </div>
-                        <ul>
-                            <li>77+ WPM Typing Speed</li>
-                            <li>99% Data Accuracy Rate</li>
-                            <li>Rapid Document Processing</li>
-                            <li>Error Detection & Correction</li>
-                            <li>Quality Control Systems</li>
-                        </ul>
-                    </div>
-
-                    <div class="skill-category">
-                        <h3><i class="fas fa-users"></i> Professional Skills</h3>
-                        <div class="skill-level">
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="96"></div>
-                            </div>
-                            <span>96%</span>
-                        </div>
-                        <ul>
-                            <li>Team Leadership & Mentoring</li>
-                            <li>Strategic Planning</li>
-                            <li>Cross-functional Coordination</li>
-                            <li>Process Optimization</li>
-                            <li>Stakeholder Management</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="achievements" class="section bg-light">
-            <div class="container">
-                <h2 class="section-title">Key Achievements</h2>
-                <div class="achievements-grid">
-                    
-                    <div class="achievement-card">
-                        <div class="achievement-icon">
-                            <i class="fas fa-rocket"></i>
-                        </div>
-                        <h3>Process Optimization</h3>
-                        <p>Reduced document processing time by 40% through implementation of advanced tracking systems and automated workflows.</p>
-                        <div class="achievement-stats">
-                            <div class="stat">
-                                <strong>40%</strong>
-                                <span>Time Saved</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h3>Financial Efficiency</h3>
-                        <p>Streamlined payment collection process reducing pending cash sales over 30 days by 35% through systematic follow-ups.</p>
-                        <div class="achievement-stats">
-                            <div class="stat">
-                                <strong>35%</strong>
-                                <span>Reduction</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-icon">
-                            <i class="fas fa-bullseye"></i>
-                        </div>
-                        <h3>Accuracy Excellence</h3>
-                        <p>Maintained 99% accuracy rate across 10,000+ documents processed annually, ensuring flawless record-keeping.</p>
-                        <div class="achievement-stats">
-                            <div class="stat">
-                                <strong>99%</strong>
-                                <span>Accuracy</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <h3>Team Development</h3>
-                        <p>Mentored and trained 5 junior document controllers, enhancing team capabilities and ensuring knowledge transfer.</p>
-                        <div class="achievement-stats">
-                            <div class="stat">
-                                <strong>5</strong>
-                                <span>Team Members</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-icon">
-                            <i class="fas fa-cogs"></i>
-                        </div>
-                        <h3>System Implementation</h3>
-                        <p>Led implementation of digital document management system reducing physical storage requirements by 60%.</p>
-                        <div class="achievement-stats">
-                            <div class="stat">
-                                <strong>60%</strong>
-                                <span>Storage Saved</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-icon">
-                            <i class="fas fa-award"></i>
-                        </div>
-                        <h3>Speed Mastery</h3>
-                        <p>Consistently maintained 77+ WPM typing speed while ensuring 99% accuracy in all documentation tasks.</p>
-                        <div class="achievement-stats">
-                            <div class="stat">
-                                <strong>77+</strong>
-                                <span>WPM Speed</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="education" class="section">
-            <div class="container">
-                <h2 class="section-title">Education & Certifications</h2>
-                <div class="education-grid">
-                    
-                    <div class="education-item">
-                        <div class="education-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <div class="education-details">
-                            <h3>Bachelor of Information Technology</h3>
-                            <h4>Technical Board Peshawar | Peshawar, Pakistan</h4>
-                            <p class="education-date">2014 – 2016</p>
-                            <div class="education-badge">
-                                <i class="fas fa-certificate"></i>
-                                Degree Completed with Honors
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="education-item">
-                        <div class="education-icon">
-                            <i class="fas fa-certificate"></i>
-                        </div>
-                        <div class="education-details">
-                            <h3>Professional Certifications</h3>
-                            <h4>Various Institutions | Ongoing Professional Development</h4>
-                            <div class="certifications-list">
-                                <div class="certification">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>Data Analyst - Digiskills Pakistan (July 2023)</span>
-                                </div>
-                                <div class="certification">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>English Language - Indus College (2020)</span>
-                                </div>
-                                <div class="certification">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>Advanced Document Management Systems</span>
-                                </div>
-                                <div class="certification">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>Quality Assurance & Control Processes</span>
-                                </div>
-                                <div class="certification">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>ERP Systems Implementation</span>
-                                </div>
-                                <div class="certification">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>Leadership & Team Management</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="section bg-light">
-            <div class="container">
-                <h2 class="section-title">Get In Touch</h2>
-                <div class="contact-content">
-                    <div class="contact-info">
-                        <h3>Contact Information</h3>
-                        
-                        <div class="contact-item contact-item-tile">
-                            <div class="contact-icon-group">
-                                <i class="fas fa-phone"></i>
-                            </div>
-                            <div class="contact-text-group">
-                                <strong>Phone</strong>
-                                <span>+971 56 203 5433</span>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item contact-item-tile">
-                            <div class="contact-icon-group">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="contact-text-group">
-                                <strong>Email</strong>
-                                <span>Adilbannusai81@gmail.com</span>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item contact-item-tile">
-                            <div class="contact-icon-group">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div class="contact-text-group">
-                                <strong>Location</strong>
-                                <span>Ras Al Khor, Dubai, UAE</span>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item contact-item-tile">
-                            <div class="contact-icon-group">
-                                <i class="fas fa-briefcase"></i>
-                            </div>
-                            <div class="contact-text-group">
-                                <strong>Status</strong>
-                                <span>Available for Positions</span>
-                            </div>
-                        </div>
-
-                        <div class="social-links">
-                            <a href="https://linkedin.com/in/adil-zaman-3650482aa" target="_blank" class="social-link linkedin">
-                                <i class="fab fa-linkedin"></i>
-                            </a>
-                            <a href="#" class="social-link twitter">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a href="#" class="social-link whatsapp">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-form">
-                        <form id="contactForm">
+                    <div class="modal-body">
+                        <form id="loginForm">
                             <div class="form-group">
-                                <label for="name">Your Name</label>
-                                <input type="text" id="name" placeholder="Enter your name" required>
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="loginEmail" required>
                             </div>
-                            
                             <div class="form-group">
-                                <label for="email">Your Email</label>
-                                <input type="email" id="email" placeholder="Enter your email" required>
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-control" id="loginPassword" required>
                             </div>
-                            
-                            <div class="form-group">
-                                <label for="subject">Subject</label>
-                                <input type="text" id="subject" placeholder="Enter subject" required>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
                             </div>
-                            
-                            <div class="form-group">
-                                <label for="message">Your Message</label>
-                                <textarea id="message" rows="5" placeholder="Enter your message" required></textarea>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-full">
-                                <i class="fas fa-paper-plane"></i> Send Message
+                            <button type="submit" class="btn btn-primary w-100 mt-3">
+                                <i class="fas fa-sign-in-alt"></i> Login
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <footer id="footer">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-section">
-                        <img src="logoimg2.png" alt="Adil Zaman Logo" class="footer-logo">
-                        <h3>Adil Zaman</h3>
-                        <p>Document Controller with 6+ years of expertise in streamlining document workflows and financial processes with exceptional speed and accuracy.</p>
-                    </div>
+            <!-- Home Section -->
+            <section id="home" class="section active">
+                <div class="hero-section">
+                    <h1>Welcome to Bannu Digital Skills Academy</h1>
+                    <p class="lead">Free IT training for Bannu youth. Learn digital skills and get job-ready!</p>
                     
-                    <div class="footer-section">
-                        <h4>Quick Links</h4>
-                        <ul>
-                            <li><a href="#about">About</a></li>
-                            <li><a href="#experience">Experience</a></li>
-                            <li><a href="#skills">Skills</a></li>
-                            <li><a href="#contact">Contact</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="footer-section">
-                        <h4>Core Strengths</h4>
-                        <ul>
-                            <li>77+ WPM Typing Speed</li>
-                            <li>99% Accuracy Rate</li>
-                            <li>6+ Years Experience</li>
-                            <li>Process Optimization</li>
-                        </ul>
+                    <div class="stats-grid mt-4">
+                        <div class="stat-card">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalStudents">500+</h3>
+                                <p>Students Trained</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon success">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="coursesCount">12</h3>
+                                <p>Courses Available</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="liveSessions">48</h3>
+                                <p>Live Sessions/Month</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon danger">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="jobPlacement">85%</h3>
+                                <p>Job Placement Rate</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="footer-bottom">
-                    <p>&copy; 2024 Adil Zaman. All Rights Reserved.</p>
-                    <p>Document Controller Portfolio - Built with Excellence</p>
+            </section>
+
+            <!-- Courses Section -->
+            <section id="courses" class="section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Available Courses</h2>
+                        <button class="btn btn-primary" id="addCourseBtn">
+                            <i class="fas fa-plus"></i> Add Course
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="courses-grid" id="coursesList">
+                            <!-- Courses will be loaded here -->
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </footer>
+            </section>
 
-    </div>
+            <!-- Zoom Integration Section -->
+            <section id="zoom" class="section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Zoom Meetings</h2>
+                        <div>
+                            <button class="btn btn-secondary" id="refreshMeetingsBtn">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                            <button class="btn btn-primary" id="createMeetingBtn">
+                                <i class="fas fa-plus"></i> Create Meeting
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="meetingsContainer">
+                            <!-- Meetings will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <div id="loginModal" class="modal-login">
-        <div class="modal-content-login">
-            <span class="close-btn-login" id="closeLoginBtn">&times;</span>
-            <div class="login-form-container">
-                <h2>Control Panel Access</h2>
-                <form id="loginForm">
-                    <p class="login-instruction">Enter your secure credentials</p>
-                    
-                    <div class="input-group">
-                        <label for="adminUsername">Username</label>
-                        <input type="text" id="adminUsername" name="username" placeholder="Admin Username" required>
+            <!-- Assignments Section -->
+            <section id="assignments" class="section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Assignments</h2>
+                        <button class="btn btn-primary" id="createAssignmentBtn">
+                            <i class="fas fa-plus"></i> Create Assignment
+                        </button>
                     </div>
-                    
-                    <div class="input-group">
-                        <label for="adminPassword">Password</label>
-                        <input type="password" id="adminPassword" name="password" placeholder="Secure Password" required>
+                    <div class="card-body">
+                        <div class="filter-bar">
+                            <select class="filter-select" id="assignmentFilter">
+                                <option value="all">All Assignments</option>
+                                <option value="pending">Pending</option>
+                                <option value="submitted">Submitted</option>
+                                <option value="graded">Graded</option>
+                            </select>
+                        </div>
+                        <div id="assignmentsList">
+                            <!-- Assignments will be loaded here -->
+                        </div>
                     </div>
-                    
-                    <button type="submit" class="submit-btn-login">Secure Login</button>
-                    <p id="loginMessage" class="login-message"></p>
-                </form>
+                </div>
+            </section>
+
+            <!-- Quizzes Section -->
+            <section id="quizzes" class="section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Quizzes</h2>
+                        <button class="btn btn-primary" id="createQuizBtn">
+                            <i class="fas fa-plus"></i> Create Quiz
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="quizzesList">
+                            <!-- Quizzes will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chat System -->
+            <section id="chat" class="section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Live Chat</h2>
+                        <div class="badge badge-primary" id="onlineCount">0 Online</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chat-container">
+                            <div class="chat-sidebar">
+                                <div class="chat-header">
+                                    <h4>Conversations</h4>
+                                </div>
+                                <div class="chat-list" id="chatList">
+                                    <!-- Chat list will be loaded here -->
+                                </div>
+                            </div>
+                            <div class="chat-main">
+                                <div class="chat-header">
+                                    <h4 id="currentChatName">Select a conversation</h4>
+                                </div>
+                                <div class="chat-messages" id="chatMessages">
+                                    <!-- Messages will be loaded here -->
+                                </div>
+                                <div class="chat-input">
+                                    <input type="text" id="messageInput" placeholder="Type your message..." disabled>
+                                    <button class="btn btn-primary" id="sendMessageBtn" disabled>
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Certificates Section -->
+            <section id="certificates" class="section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Certificates</h2>
+                        <button class="btn btn-primary" id="generateCertificateBtn">
+                            <i class="fas fa-certificate"></i> Generate Certificate
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="certificatesList">
+                            <!-- Certificates will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Attendance Section -->
+            <section id="attendance" class="section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Attendance System</h2>
+                        <button class="btn btn-primary" id="markAttendanceBtn">
+                            <i class="fas fa-check-circle"></i> Mark Attendance
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="filter-bar">
+                            <select class="filter-select" id="attendanceFilter">
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="all">All Time</option>
+                            </select>
+                            <select class="filter-select" id="courseFilter">
+                                <option value="all">All Courses</option>
+                            </select>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="attendance-table" id="attendanceTable">
+                                <!-- Attendance records will be loaded here -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notifications Section -->
+            <section id="notifications" class="section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Notifications</h2>
+                        <button class="btn btn-secondary" id="markAllReadBtn">
+                            <i class="fas fa-check-double"></i> Mark All Read
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="notifications-container" id="notificationsList">
+                            <!-- Notifications will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <p>&copy; 2024 Bannu Digital Skills Academy. All rights reserved.</p>
+                    <p>Founder: Adil Zaman | Contact: adilbannusai81@gmail.com</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#privacy">Privacy Policy</a>
+                    <a href="#terms">Terms of Service</a>
+                    <a href="#contact">Contact Us</a>
+                </div>
             </div>
         </div>
-    </div>
+    </footer>
 
-    <div id="control-panel-app">
-        <div class="app-container">
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <div class="logo">
-                        <i class="fas fa-file-contract"></i>
-                        <span>DocControl Pro</span>
-                    </div>
-                    <div class="user-info">
-                        <div class="user-avatar">
-                            <i class="fas fa-user-shield"></i>
-                        </div>
-                        <div class="user-details">
-                            <span class="username">Admin</span>
-                            <span class="user-role">Document Controller</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <nav class="sidebar-nav">
-                    <ul id="sheetList">
-                        </ul>
-                </nav>
-                
-                <div class="sidebar-footer">
-                    <button id="logoutBtn" class="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Logout
-                    </button>
-                </div>
-            </div>
-            
-            <div class="main-content">
-                <div class="top-bar">
-                    <div class="search-bar">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="globalSearch" placeholder="Search documents, tasks...">
-                    </div>
-                    <div class="top-bar-actions">
-                        <div class="notification-bell">
-                            <i class="fas fa-bell"></i>
-                            <span class="notification-count">3</span>
-                        </div>
-                        <div class="user-menu">
-                            <span>Welcome, Admin</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="content-area">
-                    <div id="dataContainer">
-                        </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <button id="backToTop" class="back-to-top">
-        <i class="fas fa-chevron-up"></i>
-    </button>
-
-    <div id="loadingScreen" class="loading-screen">
-        <div class="loading-content">
-            <div class="loading-spinner"></div>
-            <h2>Adil Zaman</h2>
-            <p>Document Controller Portfolio</p>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
 </body>
 </html>
